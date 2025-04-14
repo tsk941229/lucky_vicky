@@ -1,0 +1,17 @@
+server:
+  port: 8080
+spring:
+  profiles:
+    active: default
+  #  DB??
+  datasource:
+    url: jdbc:postgresql://43.200.202.110:5432/postgres
+    driver-class-name: org.postgresql.Driver
+    username: taeseok
+    password: 1234
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
