@@ -5,18 +5,18 @@
 >
 
 <!-- config -->
-<th:block th:replace="fragments/config :: config"></th:block>
+<th:block th:replace="common/fragments/config :: config"></th:block>
 
 <body>
 
 <!-- header -->
-<div th:replace="fragments/header :: header"></div>
+<div th:replace="common/fragments/header :: header"></div>
 
 <!--  content -->
-<div th:fragment="content"></div>
+<div layout:fragment="content"></div>
 
 <!-- footer -->
-<div th:replace="fragments/footer :: footer"></div>
+<div th:replace="common/fragments/footer :: footer"></div>
 
 </body>
 </html>
