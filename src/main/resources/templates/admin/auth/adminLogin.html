@@ -1,23 +1,21 @@
 <!DOCTYPE html>
 <html lang="ko"
       xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/common/layout/base}"
 >
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-
-</head>
 
 <th:block>
-    <script th:src="@{/js/admin/auth/adminLogin.js}"></script>
+  <script th:src="@{/js/admin/auth/adminLogin.js}"></script>
 </th:block>
 
-<body>
+<th:block layout:fragment="content">
 
-<input type="text" name="memberId" placeholder="ID"/>
-<input type="password" name="memberId" placeholder="PW"/>
+  <input type="text" name="memberId" placeholder="ID"/>
+  <input type="password" name="memberId" placeholder="PW"/>
 
-<button onclick="login();">Login</button>
+  <button onclick="login();">Login</button>
 
-</body>
+</th:block>
+
 </html>
