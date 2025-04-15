@@ -1,0 +1,20 @@
+header {
+    display: flex;
+    height: 25px;
+    padding: 16px 32px;
+    border-bottom: 1px solid gray;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-logo {
+
+}
+
+.header-nav {
+
+}
+
+.header-auth {
+
+}

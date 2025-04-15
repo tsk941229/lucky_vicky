@@ -3,18 +3,22 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 >
-<th:block th:fragment="config">
-  <head>
+<head th:fragment="config">
 
-    <!--  공통 메타태그  -->
-    <meta charset="UTF-8">
+  <!--  공통 메타태그  -->
+  <meta charset="UTF-8">
 
-    <title>Title</title>
+  <title>Title</title>
 
-    <!--  공통 css  -->
+  <!--  공통 css  -->
+  <link rel="stylesheet" th:href="@{/css/common/style.css}" />
 
-    <!--  공통 js  -->
+  <!-- 레이아웃 css -->
+  <link rel="stylesheet" th:href="@{/css/common/fragments/header.css}" />
+  <link rel="stylesheet" th:href="@{/css/common/fragments/content.css}" />
+  <link rel="stylesheet" th:href="@{/css/common/fragments/footer.css}" />
 
-  </head>
-</th:block>
+  <!--  공통 js  -->
+
+</head>
 </html>
