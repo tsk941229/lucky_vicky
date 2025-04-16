@@ -3,20 +3,34 @@
       xmlns:th="http://www.thymeleaf.org"
 >
 
-<header th:fragment="header">
+<header class="center" th:fragment="header">
 
-  <div class="header-logo">
-    로고
+  <div class="header-container center">
+
+    <div class="header-logo center">
+      <div>PENTABREED</div>
+    </div>
+
+    <div class="header-nav center">
+      <div class="menu center">
+        네비1
+      </div>
+      <div class="menu center">
+        네비2
+      </div>
+    </div>
+
+    <div class="header-auth center">
+      <div class="signature center">
+        <a>pentabreed태석 님</a>
+      </div>
+      <div class="auth center">
+        <a>로그아웃</a>
+      </div>
+    </div>
+
   </div>
 
-  <div class="header-nav">
-    ㅇ
-  </div>
-
-  <div class="header-auth">
-    <a>태석님</a>
-    <a>로그아웃</a>
-  </div>
 </header>
 
 </html>

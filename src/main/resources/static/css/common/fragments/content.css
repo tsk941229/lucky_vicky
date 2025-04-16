@@ -1,8 +1,9 @@
 main {
-    padding: 32px;
-    min-height: 80vh; /* footer 밀어내기 용도 */
+    margin-top: 60px; /* 헤더영역 */
+
+    padding: 35px;
+    min-height: 80vh; /* footer 밀어내기 */
     background-color: #f9f9f9;
-    font-family: "Segoe UI", sans-serif;
     color: #333;
 }
 
