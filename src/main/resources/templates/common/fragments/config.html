@@ -19,7 +19,15 @@
   <link rel="stylesheet" th:href="@{/css/common/fragments/content.css}" />
   <link rel="stylesheet" th:href="@{/css/common/fragments/footer.css}" />
 
+  <!-- 추가 css -->
+  <!-- TODO 공용 말고 어드민쪽으로 따로 빼야됨 -->
+  <link rel="stylesheet" th:href="@{/css/admin/fragments/main.css}" />
+  <link rel="stylesheet" th:href="@{/css/admin/fragments/sidebar.css}" />
+
   <!--  공통 js  -->
+
+  <!-- 추가 js (다른 html 파일에서 추가) -->
+  <th:block layout:fragment="js"></th:block>
 
 </head>
 </html>

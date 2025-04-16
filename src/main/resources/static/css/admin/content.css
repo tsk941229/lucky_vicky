@@ -1,0 +1,7 @@
+main {
+    margin-top: 60px; /* 헤더영역 */
+
+    padding: 35px;
+    min-height: 80vh; /* footer 밀어내기 */
+
+}

@@ -1,0 +1,9 @@
+main {
+  margin-top: 60px; /* 헤더크기 */
+
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+
+  background-color: aqua;
+}
