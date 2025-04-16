@@ -2,9 +2,18 @@
 <html lang="ko"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/admin/layout/base}"
 >
-<main th:fragment="main">
-  <th:block th:replace="~{/admin/fragments/sidebar :: sidebar}"></th:block>
-  <th:block layout:fragment="content"></th:block>
-</main>
+
+<th:block layout:fragment="css">
+  <link rel="stylesheet" th:href="@{/css/admin/fragments/main.css}">
+  <link rel="stylesheet" th:href="@{/css/admin/fragments/sidebar.css}">
+</th:block>
+
+<th:block layout:fragment="main">
+  <main>
+    <th:block th:replace="~{/admin/fragments/sidebar :: sidebar}"></th:block>
+    <th:block layout:fragment="content"></th:block>
+  </main>
+</th:block>
 </html>

@@ -2,18 +2,19 @@
 <html lang="ko"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/common/fragments/config}"
 >
 
-<!-- config -->
-<th:block th:replace="~{common/fragments/config :: config}"></th:block>
+<th:block layout:fragment="css"></th:block>
 
 <body>
 
 <!-- header -->
-<th:block th:replace="~{common/fragments/header :: header}"></th:block>
+<th:block th:replace="~{/common/fragments/header :: header}"></th:block>
 
 <!--  content -->
-<th:block th:replace="~{admin/fragments/main :: main}"></th:block>
+<th:block layout:fragment="main"></th:block>
+<!--<th:block th:replace="~{/admin/fragments/main :: main}"></th:block>-->
 
 </body>
 </html>

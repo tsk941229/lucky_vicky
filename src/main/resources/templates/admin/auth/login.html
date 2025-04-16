@@ -5,17 +5,23 @@
       layout:decorate="~{/admin/layout/base}"
 >
 
+<!--<th:block layout:fragment="css">-->
+<!--  <link rel="stylesheet" th:href="@{/css/admin/content.css}">-->
+<!--</th:block>-->
+
 <th:block>
   <script th:src="@{/js/admin/auth/login.js}"></script>
 </th:block>
 
-<div layout:fragment="content">
+<th:block layout:fragment="content">
 
-  <input type="text" name="memberId" placeholder="ID"/>
-  <input type="password" name="memberId" placeholder="PW"/>
+  <div class="content">
+    <input type="text" name="memberId" placeholder="ID"/>
+    <input type="password" name="memberId" placeholder="PW"/>
 
-  <button onclick="login();">Login</button>
+    <button onclick="login();">Login</button>
+  </div>
 
-</div>
+</th:block>
 
 </html>

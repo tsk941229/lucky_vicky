@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 >
-<head th:fragment="config">
+<head layout:fragment="config">
 
   <!--  공통 메타태그  -->
   <meta charset="UTF-8">
@@ -21,8 +21,10 @@
 
   <!-- 추가 css -->
   <!-- TODO 공용 말고 어드민쪽으로 따로 빼야됨 -->
-  <link rel="stylesheet" th:href="@{/css/admin/fragments/main.css}" />
-  <link rel="stylesheet" th:href="@{/css/admin/fragments/sidebar.css}" />
+<!--  <link rel="stylesheet" th:href="@{/css/admin/fragments/main.css}" />-->
+<!--  <link rel="stylesheet" th:href="@{/css/admin/fragments/sidebar.css}" />-->
+
+  <th:block layout:fragment="css"></th:block>
 
   <!--  공통 js  -->
 
