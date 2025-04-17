@@ -2,26 +2,38 @@
 <html lang="ko"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/admin/layout/base}"
 >
+<haed>
+  <meta charset="UTF-8">
+  <title>[관리자] 로그인</title>
 
-<th:block layout:fragment="css">
-  <link rel="stylesheet" th:href="@{/css/admin/auth/login.css}">
-</th:block>
+  <!-- css -->
+  <link rel="stylesheet" th:href="@{/css/common/util.css}" />
+  <link rel="stylesheet" th:href="@{/css/admin/auth/login.css}" />
 
-<th:block layout:fragment="js">
+  <!-- js -->
+  <script th:src="@{/js/common/webUtil.js}"></script>
+  <script th:src="@{/js/common/domUtil.js}"></script>
   <script th:src="@{/js/admin/auth/login.js}"></script>
-</th:block>
+</haed>
 
-<th:block layout:fragment="content">
+<body>
 
-  <div class="content">
-    <input type="text" name="memberId" placeholder="ID"/>
-    <input type="password" name="memberId" placeholder="PW"/>
+<div class="container center">
 
-    <button onclick="login();">Login</button>
+  <div class="logo center">
+    사진
   </div>
 
-</th:block>
+  <div class="auth center">
+    <div class="input-container center">
+      <input class="input" type="text" name="memberId" id="memberId" placeholder="ID"/>
+      <input class="input" type="password" name="password" id="password" placeholder="PW"/>
+    </div>
+    <button class="button" onclick="login();">Login</button>
+  </div>
 
+</div>
+
+</body>
 </html>
