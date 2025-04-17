@@ -3,8 +3,8 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 >
-<head layout:fragment="config">
 
+<th:block th:fragment="config">
   <!--  공통 메타태그  -->
   <meta charset="UTF-8">
 
@@ -16,20 +16,9 @@
 
   <!-- 레이아웃 css -->
   <link rel="stylesheet" th:href="@{/css/common/fragments/header.css}" />
-  <link rel="stylesheet" th:href="@{/css/common/fragments/content.css}" />
   <link rel="stylesheet" th:href="@{/css/common/fragments/footer.css}" />
 
-  <!-- 추가 css -->
-  <!-- TODO 공용 말고 어드민쪽으로 따로 빼야됨 -->
-<!--  <link rel="stylesheet" th:href="@{/css/admin/fragments/main.css}" />-->
-<!--  <link rel="stylesheet" th:href="@{/css/admin/fragments/sidebar.css}" />-->
-
-  <th:block layout:fragment="css"></th:block>
-
   <!--  공통 js  -->
+</th:block>
 
-  <!-- 추가 js (다른 html 파일에서 추가) -->
-  <th:block layout:fragment="js"></th:block>
-
-</head>
 </html>
