@@ -6,10 +6,9 @@
 
 <head>
   <!-- 기본 설정 (공용 meta, css, js) -->
-  <th:block th:replace="~{/common/fragments/config :: config}"></th:block>
+  <th:block th:replace="~{common/fragments/config :: config}"></th:block>
 
-  <link rel="stylesheet" th:href="@{/css/admin/fragments/base.css}" />
-  <link rel="stylesheet" th:href="@{/css/admin/fragments/sidebar.css}" />
+  <link rel="stylesheet" th:href="@{/css/client/fragments/base.css}" />
 
   <!-- 추가 css -->
   <th:block layout:fragment="css"></th:block>
@@ -20,13 +19,15 @@
 <body>
 
 <!-- header -->
-<th:block th:replace="~{/common/fragments/header :: header}"></th:block>
+<th:block th:replace="~{common/fragments/header :: header}"></th:block>
 
 <!--  content -->
 <main>
-  <th:block th:replace="~{/admin/fragments/sidebar :: sidebar}"></th:block>
   <th:block layout:fragment="content"></th:block>
 </main>
+
+<!-- footer -->
+<th:block th:replace="~{common/fragments/footer :: footer}"></th:block>
 
 </body>
 </html>
