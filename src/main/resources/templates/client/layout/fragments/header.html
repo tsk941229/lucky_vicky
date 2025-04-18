@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko"
       xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 >
 
 <header class="center" th:fragment="header">
@@ -8,24 +9,24 @@
   <div class="header-container center">
 
     <div class="header-logo center">
-      <div>PENTABREED</div>
+      <a href="/">PENTABREED</a>
     </div>
 
     <div class="header-nav center">
-      <div class="menu center">
-        네비1
+      <div class="menu center" onclick="goTo('/client/board/list')">
+        PENTA News
       </div>
-      <div class="menu center">
-        네비2
-      </div>
+<!--      <div class="menu center">-->
+<!--        네비2-->
+<!--      </div>-->
     </div>
 
     <div class="header-auth center">
       <div class="signature center">
-        <a>pentabreed태석 님</a>
+<!--        <a>pentabreed태석 님</a>-->
       </div>
       <div class="auth center">
-        <a>로그아웃</a>
+<!--        <a>로그아웃</a>-->
       </div>
     </div>
 
