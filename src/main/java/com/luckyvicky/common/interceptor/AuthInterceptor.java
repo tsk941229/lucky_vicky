@@ -1,4 +1,4 @@
-package com.luckyvicky.config.interceptor;
+package com.luckyvicky.common.interceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,7 +15,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         // 세션 있으면 반환, 없으면 null
         HttpSession session = request.getSession(false);
 
-        boolean isLogin = (session != null && session.getAttribute("userInfo") != null);
+        boolean isLogin = (session != null && session.getAttribute("loginInfo") != null);
 
         if(!isLogin) {
             response.sendRedirect("/admin/auth/login");

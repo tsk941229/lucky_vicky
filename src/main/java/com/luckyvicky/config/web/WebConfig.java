@@ -1,6 +1,6 @@
 package com.luckyvicky.config.web;
 
-import com.luckyvicky.config.interceptor.AuthInterceptor;
+import com.luckyvicky.common.interceptor.AuthInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -12,7 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
 
         registry.addInterceptor(new AuthInterceptor())
-                .addPathPatterns("/**")
+                .addPathPatterns("/admin/**")
                 .excludePathPatterns("/css/**", "/js/**", "/admin/auth/login", "/api/admin/auth/login");
     }
 }

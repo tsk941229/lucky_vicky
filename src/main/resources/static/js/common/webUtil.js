@@ -17,16 +17,7 @@ const fetchPOST = async (url, param) => {
         body: JSON.stringify(param),
     };
 
-    console.log("url", url);
-    console.log("option", option);
-
-    const response = await fetch(url, option);
-
-    console.log("response", response);
-
-    const jsonData = await response.json();
-
-    return jsonData;
+    return await (await fetch(url, option)).json();
 }
 
 /**

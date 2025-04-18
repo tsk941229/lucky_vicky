@@ -1,26 +1,23 @@
 package com.luckyvicky.web.admin.auth.controller;
 
+import com.luckyvicky.common.response.ApiResponse;
+import com.luckyvicky.web.admin.auth.service.AuthService;
 import com.luckyvicky.web.common.member.dto.MemberDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-
 @RestController
+@RequiredArgsConstructor
 public class ApiAuthController {
 
+    private final AuthService authService;
+
     @PostMapping("/api/admin/auth/login")
-    public HashMap<String, Object> login(@RequestBody MemberDTO memberDTO) {
-
-
-        System.out.println(memberDTO.getMemberId());
-        System.out.println(memberDTO.getPassword());
-
-        HashMap hashMap = new HashMap();
-        hashMap.put("test", "ㅇㅇ");
-
-        return hashMap;
+    public ApiResponse<?> login(@RequestBody MemberDTO memberDTO) {
+        ApiResponse<?> apiResponse = authService.login(memberDTO);
+        return apiResponse;
     }
 
 }
