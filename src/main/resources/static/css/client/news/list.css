@@ -50,27 +50,27 @@
 }
 
 /******************** 게시판 ********************/
-.board {
+.news {
 }
-.board .totalCount span{
+.news .totalCount span{
   font-size: large;
 }
-.board table {
+.news table {
   width: 100%;
   margin-top: 5px;
   text-align: center;
 }
-.board table tr, th, td {
+.news table tr, th, td {
   border: 1px solid gray;
 }
-.board table th {
+.news table th {
   background-color: lightgray;
 }
-.board .form-container {
+.news .form-container {
   display: flex;
   justify-content: end;
   margin-top: 5px;
 }
-.board .form-container .form-button {
+.news .form-container .form-button {
 
 }

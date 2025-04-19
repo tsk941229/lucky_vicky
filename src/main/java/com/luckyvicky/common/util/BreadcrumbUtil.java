@@ -19,7 +19,7 @@ public class BreadcrumbUtil {
         breadcrumbMap.put("form", "등록");
 
         // 페이지
-        breadcrumbMap.put("board", "PENTA News");
+        breadcrumbMap.put("news", "PENTA News");
     }
 
     public String getBreadcrumb(String uri) {
