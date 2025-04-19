@@ -1,0 +1,63 @@
+.container {
+  margin-top: 10px;
+}
+
+/******************** 배너 ********************/
+.banner {
+  background-color: #f9f9f9;
+}
+.banner p {
+  font-size: xx-large;
+  font-weight: bold;
+}
+
+/******************** 검색 ********************/
+.search {
+  display: flex;
+  justify-content: end;
+  width: 100%;
+  margin-top: 10px;
+}
+.search .input-container {
+  display: flex;
+  align-items: center;
+  margin: 0 10px;
+}
+.search .input-container .search-input {
+
+}
+.search .input-container .clear-button {
+
+}
+.search .search-button {
+  background-color: gray;
+}
+.search .search-button:hover {
+  background-color: #666666;
+}
+
+/******************** 게시판 ********************/
+.board {
+}
+.board .totalCount span{
+  font-size: large;
+}
+.board table {
+  width: 100%;
+  margin-top: 5px;
+  text-align: center;
+}
+.board table tr, th, td {
+  border: 1px solid gray;
+}
+.board table th {
+  background-color: lightgray;
+}
+.board .form-container {
+  display: flex;
+  justify-content: end;
+  margin-top: 5px;
+}
+.board .form-container .form-button {
+
+}

@@ -23,7 +23,8 @@
 
 <!--  content -->
 <main>
-  <div class="breadcrumb" th:text="${breadcrumb}"></div>
+
+  <th:block th:replace="~{client/layout/fragments/breadcrumb :: breadcrumb}"></th:block>
   <th:block layout:fragment="content"></th:block>
 </main>
 

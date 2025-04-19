@@ -7,6 +7,7 @@
 
 <th:block layout:fragment="css">
   <!-- css -->
+  <link rel="stylesheet" th:href="@{/css/client/board/list.css}">
 </th:block>
 
 <th:block layout:fragment="js">
@@ -24,12 +25,44 @@
 
     <!--  검색  -->
     <div class="search">
-
+      <div class="input-container">
+        <input type="text" class="search-input input" id="keyword" name="keyword" />
+<!--        <button class="clear-button">X</button>-->
+      </div>
+      <button class="search-button button">검색</button>
     </div>
 
     <!--  게시판  -->
     <div class="board">
-
+      <div class="totalCount">
+        <span th:text="|총 ${2+2} 건|">총 N 건</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>번호</th>
+            <th>구분</th>
+            <th>제목</th>
+            <th>닉네임</th>
+            <th>작성일</th>
+            <th>조회수</th>
+          </tr>
+          <tr th:each="i : ${#numbers.sequence(1,10)}">
+            <td>체크</td>
+            <td>ㅇㅇ</td>
+            <td>ㅇㅇ</td>
+            <td>ㅇㅇ</td>
+            <td>ㅇㅇ</td>
+            <td>ㅇㅇ</td>
+            <td>ㅇㅇ</td>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div class="form-container">
+        <button class="form-button button">글쓰기</button>
+      </div>
     </div>
 
     <!--  페이징 (프라그먼트로 만들자)  -->

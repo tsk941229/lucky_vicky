@@ -26,16 +26,17 @@ public class BreadcrumbUtil {
         return uriToBreadcrumb(uri);
     }
 
+    // 일단 string으로 넘기는데 map으로 넘겨서 화면에서 그리게 수정 할 수도 있음
     private String uriToBreadcrumb(String uri) {
 
         String[] uriParts = uri.split("/");
 
         StringBuffer sb = new StringBuffer();
 
-        if(uriParts.length > 1) {
-            // 기본값
-            sb.append("Home");
-        }
+//        if(uriParts.length > 1) {
+//            // 기본값
+//            sb.append("Home");
+//        }
 
         for (String uriPart : uriParts) {
             String breadcrumbPart = breadcrumbMap.get(uriPart);

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+
+<!-- breadcrumb 있을 때만 (index 페이지는 X) -->
+<th:block th:if="${not #strings.isEmpty(breadcrumb)}" th:fragment="breadcrumb">
+  <div class="breadcrumb">
+    <a href="/">Home</a>
+    <span th:text="${breadcrumb}"></span>
+  </div>
+</th:block>
+
+</html>
