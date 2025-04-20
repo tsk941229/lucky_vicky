@@ -7,6 +7,7 @@ const init = () => {
   syncEraser();
 }
 
+/******************** 키워드 관련 ********************/
 // 키워드 지우고 focus
 const eraseKeyword = () => {
 
@@ -24,3 +25,4 @@ const syncEraser = () => {
   hide($eraser);
   if(keyword) show($eraser);
 }
+

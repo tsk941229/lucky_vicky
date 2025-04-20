@@ -6,6 +6,7 @@
 .banner {
   background-color: #f9f9f9;
 }
+
 .banner p {
   font-size: xx-large;
   font-weight: bold;
@@ -18,16 +19,19 @@
   width: 100%;
   margin-top: 10px;
 }
+
 .search .input-container {
   position: relative;
   display: flex;
   align-items: center;
   margin: 0 10px;
 }
+
 .search .input-container .search-input {
   flex: 1;
   width: 18rem;
 }
+
 .search .input-container .clear-button {
   position: absolute;
   right: 5px;
@@ -39,12 +43,15 @@
   color: white;
 
 }
+
 .search .input-container .clear-button:hover {
   background-color: rgba(0, 0, 0, 0.8);
 }
+
 .search .search-button {
   background-color: gray;
 }
+
 .search .search-button:hover {
   background-color: #666666;
 }
@@ -52,25 +59,28 @@
 /******************** 게시판 ********************/
 .news {
 }
-.news .totalCount span{
+
+.news .totalCount span {
   font-size: large;
 }
+
 .news table {
   width: 100%;
   margin-top: 5px;
   text-align: center;
 }
+
 .news table tr, th, td {
   border: 1px solid gray;
 }
+
 .news table th {
   background-color: lightgray;
 }
+
 .news .form-container {
   display: flex;
   justify-content: end;
   margin-top: 5px;
 }
-.news .form-container .form-button {
 
-}
