@@ -7,12 +7,12 @@
 
 <th:block layout:fragment="css">
   <!-- css -->
-  <link rel="stylesheet" th:href="@{/css/client/news/list.css}">
+  <link rel="stylesheet" th:href="@{/css/client/news/form.css}">
 </th:block>
 
 <th:block layout:fragment="js">
   <!-- js -->
-  <script th:src="@{/js/client/news/list.js}"></script>
+  <script th:src="@{/js/client/news/form.js}"></script>
 </th:block>
 
 <th:block layout:fragment="content">
@@ -27,8 +27,8 @@
     <!--  검색  -->
     <div class="search">
       <div class="input-container">
-        <input type="text" class="search-input input" id="keyword" name="keyword" placeholder="검색어를 입력해주세요" oninput="syncEraser();" />
-        <button class="clear-button" id="eraser" onclick="eraseKeyword();">X</button>
+        <input type="text" class="search-input input" id="keyword" name="keyword" placeholder="검색어를 입력해주세요" />
+        <button class="clear-button" id="cleaner">X</button>
       </div>
       <button class="search-button button">검색</button>
     </div>
@@ -40,24 +40,24 @@
       </div>
       <table>
         <thead>
-          <tr>
-            <th></th>
-            <th>번호</th>
-            <th>구분</th>
-            <th>제목</th>
-            <th>닉네임</th>
-            <th>작성일</th>
-            <th>조회수</th>
-          </tr>
-          <tr th:each="i : ${#numbers.sequence(1,10)}">
-            <td>체크</td>
-            <td>ㅇㅇ</td>
-            <td>ㅇㅇ</td>
-            <td>ㅇㅇ</td>
-            <td>ㅇㅇ</td>
-            <td>ㅇㅇ</td>
-            <td>ㅇㅇ</td>
-          </tr>
+        <tr>
+          <th></th>
+          <th>번호</th>
+          <th>구분</th>
+          <th>제목</th>
+          <th>닉네임</th>
+          <th>작성일</th>
+          <th>조회수</th>
+        </tr>
+        <tr th:each="i : ${#numbers.sequence(1,10)}">
+          <td>체크</td>
+          <td>ㅇㅇ</td>
+          <td>ㅇㅇ</td>
+          <td>ㅇㅇ</td>
+          <td>ㅇㅇ</td>
+          <td>ㅇㅇ</td>
+          <td>ㅇㅇ</td>
+        </tr>
         </thead>
         <tbody></tbody>
       </table>

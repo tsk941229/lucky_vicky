@@ -1,0 +1,12 @@
+.container {
+  margin-top: 10px;
+}
+
+/******************** 배너 ********************/
+.banner {
+  background-color: #f9f9f9;
+}
+.banner p {
+  font-size: xx-large;
+  font-weight: bold;
+}
