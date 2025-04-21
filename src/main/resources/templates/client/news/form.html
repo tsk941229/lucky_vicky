@@ -27,19 +27,22 @@
     <!--  등록폼  -->
     <div class="form-container">
 
-      <form class="form">
+      <div class="form" id="form">
 
         <div class="row row-2 top">
           <div class="col">
             <div class="label">제목<span class="required">*</span></div>
             <div class="content">
-              <input type="text" class="input"/>
+              <input type="text" class="input" name="title" id="title"/>
             </div>
           </div>
           <div class="col">
             <div class="label">구분<span class="required">*</span></div>
             <div class="content">
-              <input type="text" class="input"/>
+              <select class="category select" name="category" id="category">
+                <option th:value="NORMAL">일반</option>
+                <option th:value="NOTICE">공지사항</option>
+              </select>
             </div>
           </div>
         </div>
@@ -48,7 +51,7 @@
           <div class="col">
             <div class="label">닉네임<span class="required">*</span></div>
             <div class="content">
-              <input type="text" class="input"/>
+              <input type="text" class="input" name="nickname" id="nickname"/>
             </div>
           </div>
         </div>
@@ -57,7 +60,7 @@
           <div class="col">
             <div class="label">비밀번호<span class="required">*</span></div>
             <div class="content">
-              <input type="text" class="input"/>
+              <input type="text" class="input" name="password" id="password"/>
             </div>
           </div>
         </div>
@@ -75,18 +78,18 @@
           <div class="col">
             <div class="label">첨부파일</div>
             <div class="content">
-              <input type="file" class=""/>
+              <input type="file" class="" name="newsFile" id="newsFile"/>
               <div>파일형식 : JPG, PNG, hwp, PDF, 첨부파일 용량제한 2MB</div>
             </div>
           </div>
         </div>
 
-      </form>
+      </div>
 
       <!-- 하단 버튼 -->
       <div class="button-container">
         <div class="left">
-          <button class="delete button">삭제</button>
+<!--          <button class="delete button">삭제</button>-->
         </div>
         <div class="right">
           <button class="back button" onclick="goTo('/client/news/list')">목록</button>

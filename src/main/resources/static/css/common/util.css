@@ -39,3 +39,20 @@
   border-color: #666666;
   box-shadow: 0 0 0 3px rgba(102, 102, 102, 0.2);
 }
+
+.select {
+  width: 50%;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* 포커스 시 버튼 컬러와 통일감 있게 */
+.select:focus {
+  border-color: #666666;
+  box-shadow: 0 0 0 3px rgba(102, 102, 102, 0.2);
+}
