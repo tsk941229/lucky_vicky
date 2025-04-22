@@ -28,7 +28,7 @@ const save = async () => {
   console.log("data",data);
 
   if(!status) {
-    alert("등록이 실패되었습니다.");
+    alert("등록에 실패했습니다.");
     return;
   }
 
@@ -57,9 +57,32 @@ const validate = (param) => {
   return true;
 }
 
+const validateFile = (param) => {
+  console.log("param", param);
+}
+
 // 답글인 경우 (parent_id)
 const getParentId = () => {
   return null;
 }
 
+// 파일 하나(multiple x)를 가정
+const chooseFile = (el) => {
+  let {name, size, type} = el.files[0];
 
+  // Byte -> MB
+  size = (size / (1024 * 1024)).toFixed(2);
+
+  let originalName = name.split(".")[0];
+  let extension = name.split(".")[1];
+
+  const param = {
+    originalName: originalName,
+    size: size,
+    extension: extension,
+    type: type
+  }
+
+  validateFile(param);
+
+}
