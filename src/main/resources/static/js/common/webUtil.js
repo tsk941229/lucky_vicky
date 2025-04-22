@@ -8,16 +8,26 @@ const fetchGET = async (url) => {
 }
 
 /**
- * fetch POST 요청
+ * fetch POST 요청 (요청 body는 formData로 통일)
  */
-const fetchPOST = async (url, param) => {
+const fetchPOST = async (url, formData) => {
     const option = {
         method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(param),
+        body: formData,
     };
 
     return await (await fetch(url, option)).json();
+}
+
+/**
+ * Object -> FormData
+ */
+const objToFormData = (obj) => {
+    const formData = new FormData();
+    Object.entries(obj).forEach(([key, value]) => {
+        formData.append(key, value);
+    });
+    return formData;
 }
 
 /**

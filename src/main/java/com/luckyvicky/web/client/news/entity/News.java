@@ -35,15 +35,10 @@ public class News extends BaseEntity {
     private NewsCategoryEnum category;
 
     private String title;
-
     private String content;
-
     private String nickname;
-
     private String password;
-
     private int hits;
-
     private int likes;
 
 }
