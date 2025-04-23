@@ -14,9 +14,9 @@ public class ApiNewsController {
     private final NewsService newsService;
 
     @PostMapping("/api/client/news/save")
-    public ApiResponse<?> save(NewsDTO newsDTO) {
-        ApiResponse<?> apiResponse = newsService.save(newsDTO);
-        return apiResponse;
+    public ApiResponse<Long> save(NewsDTO newsDTO) {
+        Long id = newsService.save(newsDTO);
+        return new ApiResponse<>(id);
     }
 
 }

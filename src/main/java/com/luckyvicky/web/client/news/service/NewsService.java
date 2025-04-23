@@ -7,48 +7,66 @@ import com.luckyvicky.web.client.news.dto.NewsDTO;
 import com.luckyvicky.web.client.news.entity.News;
 import com.luckyvicky.web.client.news.entity.NewsFile;
 import com.luckyvicky.web.client.news.enums.NewsCategoryEnum;
+import com.luckyvicky.web.client.news.repository.NewsFileRepository;
 import com.luckyvicky.web.client.news.repository.NewsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class NewsService {
 
     private final NewsRepository newsRepository;
+    private final NewsFileRepository newsFileRepository;
     private final EncodeUtil encodeUtil;
     private final FileUtil fileUtil;
 
     @Transactional
-    public ApiResponse<?> save(NewsDTO newsDTO) {
+    public Long save(NewsDTO newsDTO) {
 
-        // News 등록
-        News news = News.builder()
-                .category(NewsCategoryEnum.valueOf(newsDTO.getCategory().toUpperCase()))
-                .title(newsDTO.getTitle())
-                .content(newsDTO.getContent())
-                .nickname(newsDTO.getNickname())
-                .password(encodeUtil.encode(newsDTO.getPassword()))
-                .build();
+        try {
 
-//        newsRepository.save(news);
+            // News 등록
+            News news = News.builder()
+                    .category(NewsCategoryEnum.valueOf(newsDTO.getCategory().toUpperCase()))
+                    .title(newsDTO.getTitle())
+                    .content(newsDTO.getContent())
+                    .nickname(newsDTO.getNickname())
+                    .password(encodeUtil.encode(newsDTO.getPassword()))
+                    .build();
 
-        // NewsFile 등록
-        if(newsDTO.getNewsFile() != null && !newsDTO.getNewsFile().isEmpty()) {
+            newsRepository.save(news);
 
-            MultipartFile file = newsDTO.getNewsFile();
+            // NewsFile 등록
+            if(newsDTO.getNewsFile() != null && !newsDTO.getNewsFile().isEmpty()) {
 
-            fileUtil.upload(file);
+                MultipartFile file = newsDTO.getNewsFile();
 
-//            NewsFile newsFile = NewsFile.builder()
-//                    .news(news)
-//                    .build();
+                // 업로드
+                Map<String, String> fileInfoMap = fileUtil.upload(file);
 
+                NewsFile newsFile = NewsFile.builder()
+                        .news(news)
+                        .originalName(fileInfoMap.get("originalName"))
+                        .extension(fileInfoMap.get("extension"))
+                        .saveName(fileInfoMap.get("saveName"))
+                        .savePath(fileInfoMap.get("savePath"))
+                        .size(Long.valueOf(fileInfoMap.get("size")))
+                        .build();
 
+                newsFileRepository.save(newsFile);
+
+            }
+
+            return news.getId();
+
+        } catch (Exception e) {
+            throw new RuntimeException("News 등록 실패 :: NewsService.save()", e);
         }
 
-        return new ApiResponse<>(false);
     }
 }

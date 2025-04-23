@@ -25,11 +25,9 @@ const save = async () => {
     param["newsFile"] = getDom("newsFile").files[0];
   }
 
-  console.log("param", param);
-
   const formData = objToFormData(param);
 
-  // if(!validate(param)) return;
+  if(!validate(param)) return;
   if(!confirm("등록 하시겠습니까?")) return;
 
   const {status} = await fetchPOST("/api/client/news/save", formData);
@@ -40,6 +38,7 @@ const save = async () => {
   }
 
   alert("등록이 완료되었습니다.");
+  goTo("/client/news/list");
 
 }
 

@@ -22,9 +22,9 @@ public class NewsFile extends BaseEntity {
     private News news;
 
     private String originalName;
+    private String extension;
     private String saveName;
     private String savePath;
-    private String size;
-    private String extension;
+    private Long size;
 
 }
