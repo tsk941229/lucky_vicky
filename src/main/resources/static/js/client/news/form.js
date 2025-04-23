@@ -106,24 +106,3 @@ const chooseFile = (el) => {
 const getParentId = () => {
   return null;
 }
-
-// 파일 하나(multiple x)를 가정
-const chooseFile = (el) => {
-  let {name, size, type} = el.files[0];
-
-  // Byte -> MB
-  size = (size / (1024 * 1024)).toFixed(2);
-
-  let originalName = name.split(".")[0];
-  let extension = name.split(".")[1];
-
-  const param = {
-    originalName: originalName,
-    size: size,
-    extension: extension,
-    type: type
-  }
-
-  validateFile(param);
-
-}
