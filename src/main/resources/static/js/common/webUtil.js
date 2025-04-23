@@ -8,7 +8,7 @@ const fetchGET = async (url) => {
 }
 
 /**
- * fetch POST 요청 (요청 body는 formData로 통일)
+ * fetch POST 요청 (요청 body: formData)
  */
 const fetchPOST = async (url, formData) => {
     const option = {
@@ -25,10 +25,34 @@ const fetchPOST = async (url, formData) => {
 const objToFormData = (obj) => {
     const formData = new FormData();
     Object.entries(obj).forEach(([key, value]) => {
-        formData.append(key, value);
+        // 유효한 value만 넘기기
+        if(value) formData.append(key, value);
     });
     return formData;
 }
+
+/**
+ * file DOM을 받아서 객체 리스트로 반환 (파일이 1개여도 리스트로 반환함)
+ */
+const getFileObjList = (el) => {
+    if(!el.files && el.files.length < 1) return null;
+
+    const fileList = Array.from(el.files);
+    const fileObjList = [];
+
+    fileList.forEach(file => {
+        const {name, size} = file;
+        let fileParam = {
+            originalName: name.split(".")[0],
+            extension: name.split(".")[1],
+            size: size,
+        }
+        fileObjList.push(fileParam);
+    });
+
+    return fileObjList;
+}
+
 
 /**
  * 파라미터 주소로 이동
