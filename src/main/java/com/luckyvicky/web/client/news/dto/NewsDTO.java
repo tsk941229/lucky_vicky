@@ -5,7 +5,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
+@Builder
 @ToString
+@AllArgsConstructor
 @NoArgsConstructor
 public class NewsDTO {
 
@@ -17,6 +19,7 @@ public class NewsDTO {
     private String password;
     private int hits;
     private int likes;
+
     private MultipartFile newsFile;
 
 }
