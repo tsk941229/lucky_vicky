@@ -49,6 +49,8 @@
             <th>작성일</th>
             <th>조회수</th>
           </tr>
+        </thead>
+        <tbody>
           <tr th:each="i : ${#numbers.sequence(1,10)}">
             <td>체크</td>
             <td>ㅇㅇ</td>
@@ -58,8 +60,7 @@
             <td>ㅇㅇ</td>
             <td>ㅇㅇ</td>
           </tr>
-        </thead>
-        <tbody></tbody>
+        </tbody>
       </table>
       <div class="form-container">
         <button class="form-button button" onclick="goTo('/client/news/form')">글쓰기</button>

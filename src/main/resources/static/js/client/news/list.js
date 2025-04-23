@@ -3,8 +3,9 @@ window.addEventListener("DOMContentLoaded", () => {
   init();
 });
 
-const init = () => {
+const init = async () => {
   syncEraser();
+  // await fetchGET("/api/client/list");
 }
 
 /******************** 키워드 관련 ********************/
