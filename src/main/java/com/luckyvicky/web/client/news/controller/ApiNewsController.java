@@ -3,7 +3,6 @@ package com.luckyvicky.web.client.news.controller;
 import com.luckyvicky.common.response.ApiResponse;
 import com.luckyvicky.web.client.news.dto.NewsDTO;
 import com.luckyvicky.web.client.news.dto.NewsSearchDTO;
-import com.luckyvicky.web.client.news.enums.NewsCategoryEnum;
 import com.luckyvicky.web.client.news.service.NewsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -12,8 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller

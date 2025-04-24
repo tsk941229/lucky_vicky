@@ -2,6 +2,8 @@ package com.luckyvicky.web.client.news.service;
 
 import com.luckyvicky.common.util.EncodeUtil;
 import com.luckyvicky.common.util.FileUtil;
+import com.luckyvicky.common.util.PageUtil;
+import com.luckyvicky.common.vo.PageVO;
 import com.luckyvicky.web.client.news.dto.NewsDTO;
 import com.luckyvicky.web.client.news.dto.NewsSearchDTO;
 import com.luckyvicky.web.client.news.entity.News;
@@ -26,6 +28,7 @@ public class NewsService {
     private final NewsFileRepository newsFileRepository;
     private final EncodeUtil encodeUtil;
     private final FileUtil fileUtil;
+    private final PageUtil pageUtil;
 
     @Transactional
     public Long save(NewsDTO newsDTO) {
@@ -77,6 +80,13 @@ public class NewsService {
 
         try {
 
+            //! TODO 수정해야함(삭제 데이터 고려)
+            int totalCount = (int) newsRepository.count();
+            newsSearchDTO.setTotalCount(totalCount);
+
+            // 페이징 정보
+            PageVO pageVO = pageUtil.getPageVO(newsSearchDTO);
+
             // 페이징 반환하자
             List<News> newsList = newsRepository.findAll();
 
@@ -90,6 +100,10 @@ public class NewsService {
             throw new RuntimeException("News 조회 실패 :: NewsService.findPage()", e);
         }
 
+    }
+
+    public long getNewsTotalCount() {
+        return newsRepository.count();
     }
 
 }

@@ -17,8 +17,7 @@ const init = async () => {
 const search = async (page) => {
 
   let searchParam = {
-    page: page,
-    // n개씩 보기 추가될 수 있음
+    ...getPageParam(page),
   }
 
   // 검색 키워드 있으면 추가
