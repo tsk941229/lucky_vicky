@@ -1,9 +1,9 @@
 package com.luckyvicky.web.client.news.service;
 
-import com.luckyvicky.common.response.ApiResponse;
 import com.luckyvicky.common.util.EncodeUtil;
 import com.luckyvicky.common.util.FileUtil;
 import com.luckyvicky.web.client.news.dto.NewsDTO;
+import com.luckyvicky.web.client.news.dto.NewsSearchDTO;
 import com.luckyvicky.web.client.news.entity.News;
 import com.luckyvicky.web.client.news.entity.NewsFile;
 import com.luckyvicky.web.client.news.enums.NewsCategoryEnum;
@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -69,4 +71,25 @@ public class NewsService {
         }
 
     }
+
+
+    public List<NewsDTO> findPage(NewsSearchDTO newsSearchDTO) {
+
+        try {
+
+            // 페이징 반환하자
+            List<News> newsList = newsRepository.findAll();
+
+            List<NewsDTO> newsDTOList = newsList.stream()
+                    .map(news -> news.toDTO(news))
+                    .collect(Collectors.toList());
+
+            return newsDTOList;
+
+        } catch (Exception e) {
+            throw new RuntimeException("News 조회 실패 :: NewsService.findPage()", e);
+        }
+
+    }
+
 }

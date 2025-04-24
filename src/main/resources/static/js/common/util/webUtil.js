@@ -1,10 +1,10 @@
 /**
- * fetch GET 요청
+ * fetch GET 요청 (queryParam은 js객체 형식으로 보내자)
  */
-const fetchGET = async (url) => {
-    const response = await fetch(url);
-    const jsonData = await response.json();
-    console.log("jsonData", jsonData);
+const fetchGET = async (url, param) => {
+    const query = new URLSearchParams(param).toString();
+    if(query) url = `${url}?${query}`;
+    return await fetch(url);
 }
 
 /**

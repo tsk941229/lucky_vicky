@@ -6,7 +6,7 @@
 
 <head>
   <!-- 기본 설정 (공용 meta, css, js) -->
-  <th:block th:replace="~{client/layout/fragments/config :: config}"></th:block>
+  <th:block th:replace="~{/client/layout/fragments/config :: config}"></th:block>
 
   <link rel="stylesheet" th:href="@{/css/client/layout/base.css}" />
 
@@ -19,17 +19,17 @@
 <body>
 
 <!-- header -->
-<th:block th:replace="~{client/layout/fragments/header :: header}"></th:block>
+<th:block th:replace="~{/client/layout/fragments/header :: header}"></th:block>
 
 <!--  content -->
 <main>
 
-  <th:block th:replace="~{client/layout/fragments/breadcrumb :: breadcrumb}"></th:block>
+  <th:block th:replace="~{/client/layout/fragments/breadcrumb :: breadcrumb}"></th:block>
   <th:block layout:fragment="content"></th:block>
 </main>
 
 <!-- footer -->
-<!--<th:block th:replace="~{client/layout/fragments/footer :: footer}"></th:block>-->
+<!--<th:block th:replace="~{/client/layout/fragments/footer :: footer}"></th:block>-->
 
 </body>
 </html>

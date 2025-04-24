@@ -2,21 +2,41 @@ package com.luckyvicky.web.client.news.controller;
 
 import com.luckyvicky.common.response.ApiResponse;
 import com.luckyvicky.web.client.news.dto.NewsDTO;
+import com.luckyvicky.web.client.news.dto.NewsSearchDTO;
+import com.luckyvicky.web.client.news.enums.NewsCategoryEnum;
 import com.luckyvicky.web.client.news.service.NewsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-@RestController
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+@Controller
 @RequiredArgsConstructor
 public class ApiNewsController {
 
     private final NewsService newsService;
 
     @PostMapping("/api/client/news/save")
+    @ResponseBody
     public ApiResponse<Long> save(NewsDTO newsDTO) {
         Long id = newsService.save(newsDTO);
         return new ApiResponse<>(id);
+    }
+
+    @GetMapping("/api/client/news/list")
+    public String list(NewsSearchDTO newsSearchDTO, Model model) {
+
+        List<NewsDTO> newsList = newsService.findPage(newsSearchDTO);
+
+        model.addAttribute("newsList", newsList);
+
+        return "/client/news/fragments/list-inner";
     }
 
 }

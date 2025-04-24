@@ -33,35 +33,13 @@
       <button class="search-button button">검색</button>
     </div>
 
-    <!--  게시판  -->
     <div class="news">
-      <div class="totalCount">
-        <span th:text="|총 ${2+2} 건|">총 N 건</span>
+
+      <!-- 게시판 -->
+      <div id="news-container">
+        <th:block th:replace="~{/client/news/fragments/list-inner:: list-inner}"></th:block>
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th>번호</th>
-            <th>구분</th>
-            <th>제목</th>
-            <th>닉네임</th>
-            <th>작성일</th>
-            <th>조회수</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr th:each="i : ${#numbers.sequence(1,10)}">
-            <td>체크</td>
-            <td>ㅇㅇ</td>
-            <td>ㅇㅇ</td>
-            <td>ㅇㅇ</td>
-            <td>ㅇㅇ</td>
-            <td>ㅇㅇ</td>
-            <td>ㅇㅇ</td>
-          </tr>
-        </tbody>
-      </table>
+
       <div class="form-container">
         <button class="form-button button" onclick="goTo('/client/news/form')">글쓰기</button>
       </div>

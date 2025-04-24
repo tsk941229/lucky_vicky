@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+>
+
+<th:block th:fragment="list-inner">
+  <div class="totalCount">
+    <span th:text="|총 ${2+2} 건|">총 N 건</span>
+  </div>
+  <table>
+
+    <colgroup>
+      <col style="width: 5%"> <!-- 체크박스 -->
+      <col style="width: 10%"> <!-- 번호 -->
+      <col style="width: 10%"> <!-- 구분 -->
+      <col style="width: 30%"> <!-- 제목 -->
+      <col style="width: 10%"> <!-- 닉네임 -->
+      <col style="width: 10%"> <!-- 작성일 -->
+      <col style="width: 10%"> <!-- 조회수 -->
+    </colgroup>
+
+    <thead>
+      <tr>
+        <th>
+          <input type="checkbox" class="check"/>
+        </th>
+        <th>번호</th>
+        <th>구분</th>
+        <th>제목</th>
+        <th>닉네임</th>
+        <th>작성일</th>
+        <th>조회수</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr th:each="news : ${newsList}">
+        <td>
+          <input type="checkbox" class="check"/>
+        </td>
+        <td th:text="${news.id}">번호</td>
+        <td th:text="${news.category}">구분</td>
+        <td th:text="${news.title}">제목</td>
+        <td th:text="${news.nickname}">닉네임</td>
+        <td th:text="${#temporals.format(news.createDt, 'yyyy-MM-dd')}">작성일</td>
+        <td th:text="${news.hits}">조회수</td>
+      </tr>
+    </tbody>
+
+  </table>
+</th:block>
+
+</html>

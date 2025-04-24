@@ -2,6 +2,7 @@ package com.luckyvicky.web.client.news.entity;
 
 
 import com.luckyvicky.web.client.common.entity.BaseEntity;
+import com.luckyvicky.web.client.news.dto.NewsDTO;
 import com.luckyvicky.web.client.news.enums.NewsCategoryEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -40,5 +41,22 @@ public class News extends BaseEntity {
     private String password;
     private int hits;
     private int likes;
+
+
+    public NewsDTO toDTO(News news) {
+        return NewsDTO.builder()
+                .id(news.getId())
+                .parentId(news.getParent() != null ? news.getParent().getId() : null)
+                .category(String.valueOf(news.getCategory()))
+                .title(news.getTitle())
+                .content(news.getContent())
+                .nickname(news.getNickname())
+                .password(news.getPassword())
+                .hits(news.getHits())
+                .likes(news.getLikes())
+                .createDt(news.getCreateDt())
+                .updateDt(news.getUpdateDt())
+                .build();
+    }
 
 }

@@ -1,7 +1,10 @@
 package com.luckyvicky.web.client.news.dto;
 
+import com.luckyvicky.web.client.news.entity.News;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -11,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 public class NewsDTO {
 
+    private Long id;
     private Long parentId;
     private String category;
     private String title;
@@ -20,6 +24,11 @@ public class NewsDTO {
     private int hits;
     private int likes;
 
+    private LocalDateTime createDt;
+    private LocalDateTime updateDt;
+
     private MultipartFile newsFile;
+
+
 
 }
