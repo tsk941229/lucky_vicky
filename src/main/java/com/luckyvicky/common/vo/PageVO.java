@@ -23,7 +23,7 @@ public class PageVO {
     private Integer page;
     private Integer size;
     private Integer limit;
-    private Integer totalCount;
+    private Long totalCount;
 
     private Integer totalPages;
     private Integer startIndex;

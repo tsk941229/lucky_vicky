@@ -29,9 +29,10 @@ public class ApiNewsController {
     @GetMapping("/api/client/news/list")
     public String list(NewsSearchDTO newsSearchDTO, Model model) {
 
-        List<NewsDTO> newsList = newsService.findPage(newsSearchDTO);
+        ApiResponse<List<NewsDTO>> response = newsService.findPage(newsSearchDTO);
 
-        model.addAttribute("newsList", newsList);
+        model.addAttribute("newsList", response.getData());
+        model.addAttribute("totalCount", response.getMetaData().get("totalCount"));
 
         return "/client/news/fragments/list-inner";
     }

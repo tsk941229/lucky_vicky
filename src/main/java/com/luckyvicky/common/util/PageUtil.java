@@ -15,11 +15,11 @@ public class PageUtil {
         int page = searchDTO.getPage();
         int size = searchDTO.getSize();
         int limit = searchDTO.getLimit();
-        int totalCount = searchDTO.getTotalCount();
+        long totalCount = searchDTO.getTotalCount();
 
-        int totalPages = ((totalCount - 1) / limit) + 1;
-        int startIndex = ((page - 1) * size) + 1;
-        int endIndex = Math.min(startIndex + limit - 1, totalCount - 1);
+        int totalPages = (int) (((totalCount - 1) / limit) + 1);
+        int startIndex = (page - 1) * size;
+        int endIndex = (int) Math.min(startIndex + limit - 1, totalCount - 1);
 
         return PageVO.builder()
                 .page(page)
