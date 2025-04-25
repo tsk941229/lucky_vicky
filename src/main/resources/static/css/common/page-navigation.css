@@ -2,11 +2,19 @@
   margin-top: 5px;
 }
 
+.page-navigation-container button {
+  cursor: pointer;
+}
+
 .page-button-container {
   margin: 0 5px;
 }
 
 .page-button {
   margin: 0 2px;
+}
+.page-button.selected {
+  font-weight: bold;
+  background-color: red;
 }
 
