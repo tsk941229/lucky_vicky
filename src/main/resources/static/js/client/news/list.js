@@ -9,12 +9,12 @@ const init = async () => {
 
   // 이전 검색 정보 가져올 수 있음
   let page = 1;
-  await search(page);
+  await searchPage(page);
 }
 
 
 /******************** 검색 관련 ********************/
-const search = async (page) => {
+const searchPage = async (page) => {
 
   let searchParam = {
     ...getPageParam(page),

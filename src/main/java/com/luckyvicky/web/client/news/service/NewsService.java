@@ -84,7 +84,7 @@ public class NewsService {
     }
 
 
-    public ApiResponse<List<NewsDTO>> findPage(NewsSearchDTO newsSearchDTO) {
+    public ApiResponse<List<NewsDTO>> findNewsPage(NewsSearchDTO newsSearchDTO) {
 
         try {
 
@@ -94,12 +94,10 @@ public class NewsService {
                     .from(news)
                     .fetchOne();
 
-            newsSearchDTO.setTotalCount(totalCount);
-
             // 페이징 정보
-            PageVO pageVO = pageUtil.getPageVO(newsSearchDTO);
+            PageVO pageVO = pageUtil.getPageVO(newsSearchDTO, totalCount);
 
-            // 페이징 반환
+            // 조회
             List<News> newsList = jpaQueryFactory
                     .select(news)
                     .from(news)
@@ -112,7 +110,7 @@ public class NewsService {
                     .collect(Collectors.toList());
 
             HashMap<String, Object> metaData = new HashMap<>();
-            metaData.put("totalCount", totalCount);
+            metaData.put("pageVO", pageVO);
 
             return new ApiResponse(newsDTOList, metaData);
 

@@ -14,6 +14,5 @@ public abstract class BaseSearchDTO {
     private Integer page;
     private Integer size;
     private Integer limit;
-    private Long totalCount;
 
 }

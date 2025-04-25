@@ -8,6 +8,7 @@
 <th:block layout:fragment="css">
   <!-- css -->
   <link rel="stylesheet" th:href="@{/css/client/news/list.css}">
+  <link rel="stylesheet" th:href="@{/css/common/page-navigation.css}">
 </th:block>
 
 <th:block layout:fragment="js">
@@ -45,9 +46,6 @@
         <button class="form-button button" onclick="goTo('/client/news/form')">글쓰기</button>
       </div>
     </div>
-
-    <!--  페이징 (프라그먼트로 만들자)  -->
-
 
   </div>
 </th:block>

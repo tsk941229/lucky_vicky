@@ -13,12 +13,40 @@
     프론트 -> 서버로 보내야 하는 값 : (page, size, limit)
 */
 
+
+
 const getPageParam = (page) => {
 
     return {
         page: page,
-        size: 10,
+        size: 5,
         limit: 10,
     }
 
+}
+
+// 페이징 클릭 시 콜백 함수를 searchPage로 선언 해야 한다
+const handlePageClick = (el) => {
+    const page = parseInt(el.dataset.page);
+    searchPage(page);
+}
+
+const prev = (el) => {
+    let page = 1;
+    const startPage = parseInt(el.dataset.startPage);
+    const size = parseInt(el.dataset.size);
+
+    page = Math.max(startPage - size, 1);
+
+    searchPage(page);
+}
+
+const next = (el) => {
+    let page = 1;
+    const totalPages = parseInt(el.dataset.totalPages);
+    const endPage = parseInt(el.dataset.endPage);
+
+    page = Math.min(endPage + 1, totalPages);
+
+    searchPage(page);
 }

@@ -3,11 +3,37 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 >
+<!--
+  사용처에서 pageVO를 받아야 함
+-->
+<th:block th:fragment="page-navigation(pageVO)">
 
-<th:block th:fragment="page-navigation">
-  <div class="center">
-    <div th:text="${totalCount}"></div>
+  <div class="page-navigation-container center">
+
+    <button type="button"
+            th:if="${pageVO.startPage > 1}"
+            th:attr="data-start-page=${pageVO.startPage}, data-size=${pageVO.size}"
+            onclick="prev(this)"
+    >prev</button>
+
+    <div class="page-button-container">
+      <button type="button"
+              class="page-button"
+              th:each="i : ${#numbers.sequence(pageVO.startPage, pageVO.endPage)}"
+              th:text="${i}"
+              th:attr="data-page=${i}"
+              onclick="handlePageClick(this)"
+      ></button>
+    </div>
+
+    <button type="button"
+            th:if="${pageVO.endPage < pageVO.totalPages}"
+            th:attr="data-end-page=${pageVO.endPage}, data-total-pages=${pageVO.totalPages}"
+            onclick="next(this)"
+    >prev</button>
+
   </div>
+
 </th:block>
 
 </html>
