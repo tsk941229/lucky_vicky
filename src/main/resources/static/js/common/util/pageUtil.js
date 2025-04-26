@@ -19,7 +19,7 @@ const getPageParam = (page) => {
 
     return {
         page: page,
-        size: 5,
+        size: 10,
         limit: 10,
     }
 

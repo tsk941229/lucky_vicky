@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/client/layout/base}"
+>
+
+<th:block layout:fragment="css">
+  <!-- css -->
+  <link rel="stylesheet" th:href="@{/css/client/news/detail.css}">
+</th:block>
+
+<th:block layout:fragment="js">
+  <!-- js -->
+  <script th:src="@{/js/client/news/news.js}"></script>
+  <script th:src="@{/js/client/news/detail.js}"></script>
+</th:block>
+
+<th:block layout:fragment="content">
+  <!-- content -->
+  <div class="container">
+
+    <!--  배너  -->
+    <div class="banner center">
+      <span class="banner-category" th:text="${newsDTO.category.getValue()}"></span>
+      <span class="banner-title" th:text="${newsDTO.title}"></span>
+    </div>
+
+    <!--  컨텐츠  -->
+    <div class="content-container">
+
+      <!-- 컨텐츠 탑 -->
+      <div class="content-top">
+        <div class="content-top-left center">
+          <div class="nickname" th:text="${newsDTO.nickname}">닉네임</div>
+          <div class="createDt" th:text="${#temporals.format(newsDTO.createDt, 'yyyy.MM.dd')}">2025.01.01</div>
+        </div>
+        <div class="content-top-right center">
+          <div class="views">
+            조회수
+          </div>
+          <div class="likes">
+            좋아요
+          </div>
+        </div>
+      </div>
+
+      <!-- 컨텐츠 -->
+      <div class="content-body">
+
+        <div class="file">
+          <span>첨부파일</span>
+          <a class="file-name">없음</a>
+        </div>
+
+        <div class="content" th:text="${newsDTO.content}">
+        </div>
+
+      </div>
+
+      <!-- 댓글 -->
+      <div class="comment">
+
+        <div class="comment-top">댓글 N</div>
+
+        <!-- 댓글 등록 폼 -->
+        <div class="comment-save">
+
+          <div class="input-container">
+
+            <div class="auth">
+              <input type="text" class="nickname input" name="comment-save-nickname" id="comment-save-nickname" placeholder="닉네임 입력"/>
+              <input type="password" class="password input" name="comment-save-password" id="comment-save-password" placeholder="비밀번호 입력"/>
+              <input type="password" class="password-check input" name="comment-save-password-check" id="comment-save-password-check" placeholder="비밀번호 확인"/>
+            </div>
+
+            <div class="comment-save-content-container">
+              <textarea class="input"
+                        id="comment-save-content"
+                        name="comment-save-content"
+                        placeholder="타인의 권리를 침해하거나 명예를 훼손하는 댓글은 운영원칙 및 관련 법률에 따라 제재를 받을 수 있습니다."
+                        rows="5"
+              ></textarea>
+            </div>
+
+          </div>
+
+          <div class="comment-save-button-container">
+            <button class="comment-save-button button" th:onclick="saveComment('[[${newsDTO.id}]]')">등록</button>
+          </div>
+
+        </div>
+
+        <!-- 댓글 목록 -->
+        <div class="comment-list">
+
+          <div class="comment-detail" th:each="comment : ${newsDTO.newsCommentDTOList}">
+            <div class="comment-detail-nickname" th:text="${comment.nickname}">PENTABREED</div>
+            <div class="comment-detail-container">
+              <div class="comment-detail-container-left" th:text="${comment.content}">댓글입니다. 댓글입니다. 댓글입니다.</div>
+              <div class="comment-detail-container-right">
+                <div th:text="${#temporals.format(comment.createDt, 'yyyy-MM-dd HH:mm')}">2025.01.05 09:20</div>
+                <button class="comment-detail-delete-button button">X</button>
+              </div>
+            </div>
+            <button class="comment-detail-toggle-reply-button button">답글</button>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="content-button-container">
+        <div class="content-button-left"></div>
+        <div class="content-button-center">
+          <button class="list-button button" onclick="goBack()">목록보기</button>
+        </div>
+        <div class="content-button-right">
+          <button class="reply-button button">답글</button>
+          <button class="update-button button">수정</button>
+          <button class="delete-button button">삭제</button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</th:block>
+
+</html>

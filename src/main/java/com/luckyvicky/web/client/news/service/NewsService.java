@@ -5,13 +5,18 @@ import com.luckyvicky.common.util.EncodeUtil;
 import com.luckyvicky.common.util.FileUtil;
 import com.luckyvicky.common.util.PageUtil;
 import com.luckyvicky.common.vo.PageVO;
+import com.luckyvicky.web.client.news.dto.NewsCommentDTO;
 import com.luckyvicky.web.client.news.dto.NewsDTO;
 import com.luckyvicky.web.client.news.dto.NewsSearchDTO;
 import com.luckyvicky.web.client.news.entity.News;
+import com.luckyvicky.web.client.news.entity.NewsComment;
 import com.luckyvicky.web.client.news.entity.NewsFile;
+import com.luckyvicky.web.client.news.entity.QNewsComment;
 import com.luckyvicky.web.client.news.enums.NewsCategoryEnum;
+import com.luckyvicky.web.client.news.repository.NewsCommentRepository;
 import com.luckyvicky.web.client.news.repository.NewsFileRepository;
 import com.luckyvicky.web.client.news.repository.NewsRepository;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +29,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.luckyvicky.web.client.news.entity.QNews.news;
+import static com.luckyvicky.web.client.news.entity.QNewsComment.newsComment;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +37,7 @@ public class NewsService {
 
     private final NewsRepository newsRepository;
     private final NewsFileRepository newsFileRepository;
+    private final NewsCommentRepository newsCommentRepository;
 
     private final JPAQueryFactory jpaQueryFactory;
 
@@ -45,7 +52,7 @@ public class NewsService {
 
             // News 등록
             News news = News.builder()
-                    .category(NewsCategoryEnum.valueOf(newsDTO.getCategory().toUpperCase()))
+                    .category(newsDTO.getCategory())
                     .title(newsDTO.getTitle())
                     .content(newsDTO.getContent())
                     .nickname(newsDTO.getNickname())
@@ -84,6 +91,7 @@ public class NewsService {
     }
 
 
+    @Transactional
     public ApiResponse<List<NewsDTO>> findNewsPage(NewsSearchDTO newsSearchDTO) {
 
         try {
@@ -97,17 +105,19 @@ public class NewsService {
             // 페이징 정보
             PageVO pageVO = pageUtil.getPageVO(newsSearchDTO, totalCount);
 
-            // 조회
+            // 뉴스 목록 조회
             List<News> newsList = jpaQueryFactory
                     .select(news)
                     .from(news)
+                    .orderBy(news.id.desc())
                     .limit(pageVO.getLimit())
                     .offset(pageVO.getStartIndex())
                     .fetch();
 
             List<NewsDTO> newsDTOList = newsList.stream()
-                    .map(news -> news.toDTO(news))
+                    .map(news -> News.toDTO(news))
                     .collect(Collectors.toList());
+
 
             HashMap<String, Object> metaData = new HashMap<>();
             metaData.put("pageVO", pageVO);
@@ -115,7 +125,64 @@ public class NewsService {
             return new ApiResponse(newsDTOList, metaData);
 
         } catch (Exception e) {
-            throw new RuntimeException("News 조회 실패 :: NewsService.findPage()", e);
+            throw new RuntimeException("News Page 조회 실패 :: NewsService.findNewsPage()", e);
+        }
+
+    }
+
+
+    @Transactional
+    public ApiResponse<NewsDTO> findNews(long id) {
+
+        try {
+            News news = newsRepository.findById(id).orElseThrow();
+
+            // 댓글 조회
+            List<NewsComment> newsCommentList = jpaQueryFactory
+                    .select(newsComment)
+                    .from(newsComment)
+                    .where(newsComment.news.id.eq(news.getId()))
+                    .orderBy(newsComment.id.desc())
+                    .fetch();
+
+            // 프로젝션 쓰는걸로 수정해도 됨
+            List<NewsCommentDTO> newsCommentDTOList = newsCommentList.stream()
+                    .map(newsComment -> NewsComment.toDTO(newsComment))
+                    .collect(Collectors.toList());
+
+            // 댓글 목록이랑 같이
+            NewsDTO newsDTO = News.toDTO(news, newsCommentDTOList);
+
+            return new ApiResponse<>(newsDTO);
+
+        } catch(Exception e) {
+            throw new RuntimeException("News 조회 실패 :: NewsService.findNews()", e);
+        }
+
+    }
+
+
+    // 댓글 저장
+    @Transactional
+    public Long saveComment(NewsCommentDTO newsCommentDTO) {
+
+        try {
+
+            News news = newsRepository.findById(newsCommentDTO.getNewsId()).orElseThrow();
+
+            NewsComment newsComment = NewsComment.builder()
+                    .news(news)
+                    .content(newsCommentDTO.getContent())
+                    .nickname(newsCommentDTO.getNickname())
+                    .password(encodeUtil.encode(newsCommentDTO.getPassword()))
+                    .build();
+
+            newsCommentRepository.save(newsComment);
+
+            return newsComment.getId();
+
+        } catch (Exception e) {
+            throw new RuntimeException("News Comment 등록 실패 :: NewsService.saveComment()", e);
         }
 
     }

@@ -24,13 +24,18 @@ const searchPage = async (page) => {
   const keyword = getDom("keyword").value;
   if(keyword) searchParam["keyword"] = keyword;
 
-  const response = await fetchGET("/api/client/news/list", searchParam);
+  const response = await fetchGET("/client/news/list-inner", searchParam);
   const container = getDom("news-container");
 
   // 비동기로 그리기
   container.innerHTML = await response.text();
 
 }
+
+const goDetail = () => {
+
+}
+
 
 /******************** 키워드 관련 ********************/
 // 키워드 지우고 focus

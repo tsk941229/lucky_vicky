@@ -1,20 +1,30 @@
 .page-navigation-container {
-  margin-top: 5px;
+  margin-top: 20px;
 }
 
 .page-navigation-container button {
   cursor: pointer;
+  padding: 0.3rem 0.8rem;
+  border-radius: 6px;
+  font-size: medium;
+  font-weight: 500;
+  border: none;
+
+  background-color: white;
 }
 
 .page-button-container {
-  margin: 0 5px;
+  margin: 0 4px;
 }
 
 .page-button {
   margin: 0 2px;
 }
+.page-button:hover {
+  background-color: #409eff;
+}
 .page-button.selected {
-  font-weight: bold;
-  background-color: red;
+  font-weight: bolder;
+  background-color: #66b1ff;
 }
 

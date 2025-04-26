@@ -14,7 +14,7 @@
   <table>
 
     <colgroup>
-      <col style="width: 5%">   <!-- 체크박스 -->
+<!--      <col style="width: 5%">   &lt;!&ndash; 체크박스 &ndash;&gt;-->
       <col style="width: 10%">  <!-- 번호 -->
       <col style="width: 10%">  <!-- 구분 -->
       <col style="width: 30%">  <!-- 제목 -->
@@ -25,9 +25,9 @@
 
     <thead>
       <tr>
-        <th>
-          <input type="checkbox" class="check"/>
-        </th>
+<!--        <th>-->
+<!--          <input type="checkbox" class="check"/>-->
+<!--        </th>-->
         <th>번호</th>
         <th>구분</th>
         <th>제목</th>
@@ -38,12 +38,12 @@
     </thead>
 
     <tbody>
-      <tr th:each="news : ${newsList}">
-        <td>
-          <input type="checkbox" class="check"/>
-        </td>
+      <tr th:each="news : ${newsList}" th:onclick="goTo('/client/news/detail/[[${news.id}]]')">
+<!--        <td>-->
+<!--          <input type="checkbox" class="check"/>-->
+<!--        </td>-->
         <td th:text="${news.id}">번호</td>
-        <td th:text="${news.category}">구분</td>
+        <td th:text="${news.category.getValue()}">구분</td>
         <td th:text="${news.title}">제목</td>
         <td th:text="${news.nickname}">닉네임</td>
         <td th:text="${#temporals.format(news.createDt, 'yyyy-MM-dd')}">작성일</td>

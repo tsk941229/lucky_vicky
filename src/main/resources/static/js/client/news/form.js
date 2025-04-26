@@ -30,7 +30,7 @@ const save = async () => {
   if(!validate(param)) return;
   if(!confirm("등록 하시겠습니까?")) return;
 
-  const {status} = await fetchPOST("/api/client/news/save", formData);
+  const {status} = await fetchPOST("/client/news/save", formData);
 
   if(!status) {
     alert("등록에 실패했습니다.");

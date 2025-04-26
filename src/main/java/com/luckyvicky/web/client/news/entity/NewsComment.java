@@ -1,6 +1,7 @@
 package com.luckyvicky.web.client.news.entity;
 
 import com.luckyvicky.web.client.common.entity.BaseEntity;
+import com.luckyvicky.web.client.news.dto.NewsCommentDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,5 +36,19 @@ public class NewsComment extends BaseEntity {
     private String nickname;
 
     private String password;
+
+
+    public static NewsCommentDTO toDTO(NewsComment newsComment) {
+        return NewsCommentDTO.builder()
+                .id(newsComment.getId())
+                .newsId(newsComment.getNews() != null ? newsComment.getNews().getId() : null)
+                .parentId(newsComment.getParent() != null ? newsComment.getParent().getId() : null)
+                .nickname(newsComment.getNickname())
+                .password(newsComment.getPassword())
+                .content(newsComment.getContent())
+                .createDt(newsComment.getCreateDt())
+                .updateDt(newsComment.getUpdateDt())
+                .build();
+    }
 
 }

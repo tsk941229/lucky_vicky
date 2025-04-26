@@ -70,12 +70,18 @@
   text-align: center;
 }
 
-.news table tr, th, td {
-  border: 1px solid gray;
+.news table th, td {
+  border-bottom: 1px solid gray;
 }
 
 .news table th {
   background-color: lightgray;
+}
+
+.news table tr:hover {
+  background-color: #f9f9f9;
+  cursor: pointer;
+
 }
 
 .news .form-container {

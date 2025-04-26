@@ -40,8 +40,10 @@
             <div class="label">구분<span class="required">*</span></div>
             <div class="content">
               <select class="category select" name="category" id="category">
-                <option th:value="NORMAL">일반</option>
-                <option th:value="NOTICE">공지사항</option>
+                <option th:each="category : ${categoryList}"
+                        th:text="${category.value}"
+                        th:value="${category.name()}"
+                >일반</option>
               </select>
             </div>
           </div>
