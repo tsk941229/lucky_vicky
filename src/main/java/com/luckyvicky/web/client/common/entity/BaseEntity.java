@@ -1,5 +1,6 @@
 package com.luckyvicky.web.client.common.entity;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
@@ -19,4 +20,6 @@ public abstract class BaseEntity {
 
     @LastModifiedDate
     private LocalDateTime updateDt;
+
+//    private boolean enabled = true;
 }

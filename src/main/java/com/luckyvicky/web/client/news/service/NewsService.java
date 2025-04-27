@@ -105,18 +105,42 @@ public class NewsService {
             // 페이징 정보
             PageVO pageVO = pageUtil.getPageVO(newsSearchDTO, totalCount);
 
-            // 뉴스 목록 조회
-            List<News> newsList = jpaQueryFactory
-                    .select(news)
+            // 뉴스 목록, 댓글 count 조회
+//            List<News> newsList = jpaQueryFactory
+//                    .select(news)
+//                    .from(news)
+//                    .orderBy(news.id.desc())
+//                    .limit(pageVO.getLimit())
+//                    .offset(pageVO.getStartIndex())
+//                    .fetch();
+//
+//            List<NewsDTO> newsDTOList = newsList.stream()
+//                    .map(news -> News.toDTO(news))
+//                    .collect(Collectors.toList());
+
+            // 생성자 순서 맞춰야 함 TODO: 답글 할 때 셀프참조 구현해야함
+            List<NewsDTO> newsDTOList = jpaQueryFactory
+                    .select(Projections.constructor(NewsDTO.class,
+                            news.id,
+                            news.category,
+                            news.title,
+                            news.content,
+                            news.nickname,
+                            news.password,
+                            news.hits,
+                            news.likes,
+                            news.createDt,
+                            news.updateDt,
+                            newsComment.count()
+                    ))
                     .from(news)
+                    .leftJoin(newsComment)
+                    .on(news.id.eq(newsComment.news.id))
+                    .groupBy(news.id, news.parent.id)
                     .orderBy(news.id.desc())
                     .limit(pageVO.getLimit())
                     .offset(pageVO.getStartIndex())
                     .fetch();
-
-            List<NewsDTO> newsDTOList = newsList.stream()
-                    .map(news -> News.toDTO(news))
-                    .collect(Collectors.toList());
 
 
             HashMap<String, Object> metaData = new HashMap<>();

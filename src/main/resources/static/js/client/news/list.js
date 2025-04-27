@@ -10,6 +10,7 @@ const init = async () => {
   // 이전 검색 정보 가져올 수 있음
   let page = 1;
   await searchPage(page);
+  console.log("searchPage 호출");
 }
 
 

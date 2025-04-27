@@ -70,8 +70,22 @@
   text-align: center;
 }
 
+.news table tr {
+  height: 40px;
+}
+
 .news table th, td {
   border-bottom: 1px solid gray;
+  min-height: 50px;
+}
+
+.news table td .news-comment-count {
+  color: red;
+}
+
+.news table tbody .title {
+  text-align: start;
+  padding-left: 15px;
 }
 
 .news table th {

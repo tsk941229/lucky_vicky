@@ -181,3 +181,46 @@
 .delete-button:hover {
   background-color: darkred;
 }
+
+/******************** 댓글 삭제 모달 ********************/
+.comment-delete-modal {
+  display: none;
+  position: fixed;
+  right: 5%;
+  bottom: 15%;
+  flex-direction: column;
+
+  background-color: rgba(100, 100, 100, 0.5);
+  padding: 20px 20px;
+  border-radius: 6px;
+}
+
+.modal-content-container {
+  display: flex;
+}
+.close-button {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+
+  background-color: transparent;
+  color: black;
+}
+.close-button:hover {
+  background-color: #cccccc;
+}
+.modal-title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+}
+.modal-content-container {
+  margin-top: 10px;
+}
+.modal-password-input {
+  width: 63%;
+}
+.delete-execute-button {
+  position: absolute;
+  right: 20px;
+}

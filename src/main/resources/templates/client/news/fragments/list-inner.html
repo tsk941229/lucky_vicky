@@ -44,7 +44,10 @@
 <!--        </td>-->
         <td th:text="${news.id}">번호</td>
         <td th:text="${news.category.getValue()}">구분</td>
-        <td th:text="${news.title}">제목</td>
+        <td class="title">
+          <span th:text="${news.title}">제목</span>
+          <span class="news-comment-count" th:if="${news.newsCommentCount > 0}" th:text="|[${news.newsCommentCount}]|">[2]</span>
+        </td>
         <td th:text="${news.nickname}">닉네임</td>
         <td th:text="${#temporals.format(news.createDt, 'yyyy-MM-dd')}">작성일</td>
         <td th:text="${news.hits}">조회수</td>

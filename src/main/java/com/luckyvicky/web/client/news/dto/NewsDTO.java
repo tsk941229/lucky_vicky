@@ -31,7 +31,22 @@ public class NewsDTO {
 
     private MultipartFile newsFile;
 
+    private Long newsCommentCount;
     private List<NewsCommentDTO> newsCommentDTOList;
 
 
+    // 목록 조회용 생성자 (parent, 파일, 댓글목록 빠짐 [수정될 수 있음])
+    public NewsDTO(Long id, NewsCategoryEnum category, String title, String content, String nickname, String password, int hits, int likes, LocalDateTime createDt, LocalDateTime updateDt, Long newsCommentCount) {
+        this.id = id;
+        this.category = category;
+        this.title = title;
+        this.content = content;
+        this.nickname = nickname;
+        this.password = password;
+        this.hits = hits;
+        this.likes = likes;
+        this.createDt = createDt;
+        this.updateDt = updateDt;
+        this.newsCommentCount = newsCommentCount;
+    }
 }

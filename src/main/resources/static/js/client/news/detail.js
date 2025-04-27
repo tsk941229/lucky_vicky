@@ -66,3 +66,25 @@ const clearCommentInput = () => {
     getDom("comment-save-password").value = "";
     getDom("comment-save-password-check").value = "";
 }
+
+
+/******************** 댓글 삭제 모달 ********************/
+const showDeleteModal = (commentId) => {
+    // 모달에 id 넘겨주기
+    getDom("comment-delete-modal").setAttribute("data-id", commentId);
+
+    show(getDom("comment-delete-modal"));
+    getDom("comment-delete-password").focus();
+}
+const closeDeleteModel = () => {
+    hide(getDom("comment-delete-modal"));
+    getDom("comment-delete-password").value = "";
+}
+
+const deleteComment = () => {
+    // 넘겨 받은 id
+    const id = getDom("comment-delete-modal").dataset.id;
+
+
+
+}
