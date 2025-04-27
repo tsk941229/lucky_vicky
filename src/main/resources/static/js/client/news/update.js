@@ -6,7 +6,7 @@ const init = () => {
 
 }
 
-const save = async () => {
+const update = async () => {
 
   const param = {
     category: getDom("category").value,
@@ -28,9 +28,9 @@ const save = async () => {
   const formData = objToFormData(param);
 
   if(!validate(param)) return;
-  if(!confirm("등록 하시겠습니까?")) return;
+  if(!confirm("수정 하시겠습니까?")) return;
 
-  const {status} = await fetchPOST("/client/news/save", formData);
+  const {status} = await fetchPOST("/client/news/update", formData);
 
   if(!status) {
     alert("등록에 실패했습니다.");
@@ -38,7 +38,8 @@ const save = async () => {
   }
 
   alert("등록이 완료되었습니다.");
-  goTo("/client/news/list");
+  // goTo("/client/news/list");
+  goBack();
 
 }
 
@@ -61,9 +62,4 @@ const validate = (param) => {
   }
 
   return true;
-}
-
-// 답글인 경우 (parent_id)
-const getParentId = () => {
-  return null;
 }

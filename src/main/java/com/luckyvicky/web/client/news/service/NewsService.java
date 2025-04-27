@@ -5,6 +5,7 @@ import com.luckyvicky.common.util.EncodeUtil;
 import com.luckyvicky.common.util.FileUtil;
 import com.luckyvicky.common.util.PageUtil;
 import com.luckyvicky.common.vo.PageVO;
+import com.luckyvicky.web.client.common.dto.FileDTO;
 import com.luckyvicky.web.client.news.dto.NewsCommentDTO;
 import com.luckyvicky.web.client.news.dto.NewsDTO;
 import com.luckyvicky.web.client.news.dto.NewsSearchDTO;
@@ -30,6 +31,7 @@ import java.util.stream.Collectors;
 
 import static com.luckyvicky.web.client.news.entity.QNews.news;
 import static com.luckyvicky.web.client.news.entity.QNewsComment.newsComment;
+import static com.luckyvicky.web.client.news.entity.QNewsFile.newsFile;
 
 @Service
 @RequiredArgsConstructor
@@ -67,15 +69,15 @@ public class NewsService {
                 MultipartFile file = newsDTO.getNewsFile();
 
                 // 업로드
-                Map<String, String> fileInfoMap = fileUtil.upload(file);
+                FileDTO fileDTO = fileUtil.upload(file);
 
                 NewsFile newsFile = NewsFile.builder()
                         .news(news)
-                        .originalName(fileInfoMap.get("originalName"))
-                        .extension(fileInfoMap.get("extension"))
-                        .saveName(fileInfoMap.get("saveName"))
-                        .savePath(fileInfoMap.get("savePath"))
-                        .size(Long.valueOf(fileInfoMap.get("size")))
+                        .originalName(fileDTO.getOriginalName())
+                        .extension(fileDTO.getExtension())
+                        .saveName(fileDTO.getSaveName())
+                        .savePath(fileDTO.getSavePath())
+                        .size(fileDTO.getSize())
                         .build();
 
                 newsFileRepository.save(newsFile);
@@ -104,19 +106,6 @@ public class NewsService {
 
             // 페이징 정보
             PageVO pageVO = pageUtil.getPageVO(newsSearchDTO, totalCount);
-
-            // 뉴스 목록, 댓글 count 조회
-//            List<News> newsList = jpaQueryFactory
-//                    .select(news)
-//                    .from(news)
-//                    .orderBy(news.id.desc())
-//                    .limit(pageVO.getLimit())
-//                    .offset(pageVO.getStartIndex())
-//                    .fetch();
-//
-//            List<NewsDTO> newsDTOList = newsList.stream()
-//                    .map(news -> News.toDTO(news))
-//                    .collect(Collectors.toList());
 
             // 생성자 순서 맞춰야 함 TODO: 답글 할 때 셀프참조 구현해야함
             List<NewsDTO> newsDTOList = jpaQueryFactory
@@ -155,27 +144,48 @@ public class NewsService {
     }
 
 
+    /**
+     * 뉴스, 뉴스댓글, 뉴스 파일 조회 (NewsDTO)
+     */
     @Transactional
     public ApiResponse<NewsDTO> findNews(long id) {
 
         try {
             News news = newsRepository.findById(id).orElseThrow();
 
-            // 댓글 조회
-            List<NewsComment> newsCommentList = jpaQueryFactory
-                    .select(newsComment)
+            // 파일 조회
+            FileDTO newsFileDTO = jpaQueryFactory
+                    .select(Projections.constructor(FileDTO.class,
+                            newsFile.id,
+                            newsFile.originalName,
+                            newsFile.extension,
+                            newsFile.size,
+                            newsFile.savePath,
+                            newsFile.saveName,
+                            newsFile.createDt,
+                            newsFile.updateDt
+                    ))
+                    .from(newsFile)
+                    .where(newsFile.news.id.eq(id))
+                    .fetchOne();
+
+            // 댓글 만 가져오기 대댓글 X
+            List<NewsCommentDTO> newsCommentDTOList = jpaQueryFactory
+                    .select(Projections.constructor(NewsCommentDTO.class,
+                            newsComment.id,
+                            newsComment.nickname,
+                            newsComment.password,
+                            newsComment.content,
+                            newsComment.createDt,
+                            newsComment.updateDt
+                    ))
                     .from(newsComment)
                     .where(newsComment.news.id.eq(news.getId()))
                     .orderBy(newsComment.id.desc())
                     .fetch();
 
-            // 프로젝션 쓰는걸로 수정해도 됨
-            List<NewsCommentDTO> newsCommentDTOList = newsCommentList.stream()
-                    .map(newsComment -> NewsComment.toDTO(newsComment))
-                    .collect(Collectors.toList());
-
-            // 댓글 목록이랑 같이
-            NewsDTO newsDTO = News.toDTO(news, newsCommentDTOList);
+            // 파일, 댓글 목록이랑 같이
+            NewsDTO newsDTO = News.toDTO(news, newsFileDTO, newsCommentDTOList);
 
             return new ApiResponse<>(newsDTO);
 
@@ -186,29 +196,48 @@ public class NewsService {
     }
 
 
-    // 댓글 저장
     @Transactional
-    public Long saveComment(NewsCommentDTO newsCommentDTO) {
+    public ApiResponse<Boolean> delete(NewsDTO newsDTO) {
 
         try {
 
-            News news = newsRepository.findById(newsCommentDTO.getNewsId()).orElseThrow();
+            News news = newsRepository.findById(newsDTO.getId()).orElseThrow();
 
-            NewsComment newsComment = NewsComment.builder()
-                    .news(news)
-                    .content(newsCommentDTO.getContent())
-                    .nickname(newsCommentDTO.getNickname())
-                    .password(encodeUtil.encode(newsCommentDTO.getPassword()))
-                    .build();
+            boolean isMatched = encodeUtil.matches(newsDTO.getPassword(), news.getPassword());
 
-            newsCommentRepository.save(newsComment);
+            if(isMatched) {
 
-            return newsComment.getId();
+                // 댓글 모두 지우기
+                List<Long> newsCommentIdList = jpaQueryFactory
+                        .select(newsComment.id)
+                        .from(newsComment)
+                        .where(newsComment.news.id.eq(news.getId()))
+                        .fetch();
+
+                newsCommentRepository.deleteAllById(newsCommentIdList);
+                newsRepository.delete(news);
+            }
+
+            return new ApiResponse<>(isMatched);
 
         } catch (Exception e) {
-            throw new RuntimeException("News Comment 등록 실패 :: NewsService.saveComment()", e);
+            throw new RuntimeException("News 삭제 실패 :: NewsService.delete()", e);
         }
 
     }
 
+    @Transactional
+    public ApiResponse<Boolean> matchPassword(NewsDTO newsDTO) {
+
+        try{
+
+            News news = newsRepository.findById(newsDTO.getId()).orElseThrow();
+            boolean isMatched = encodeUtil.matches(newsDTO.getPassword(), news.getPassword());
+
+            return new ApiResponse<>(isMatched);
+
+        } catch (Exception e) {
+            throw new RuntimeException("News 조회 실패 :: NewsService.matchPassword()", e);
+        }
+    }
 }

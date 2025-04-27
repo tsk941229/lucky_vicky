@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/client/layout/base}"
+>
+
+<th:block layout:fragment="css">
+  <!-- css -->
+  <link rel="stylesheet" th:href="@{/css/client/news/update.css}">
+</th:block>
+
+<th:block layout:fragment="js">
+  <!-- js -->
+  <script th:src="@{/js/client/news/update.js}"></script>
+</th:block>
+
+<th:block layout:fragment="content">
+  <!-- content -->
+  <div class="container">
+
+    <!--  배너  -->
+    <div class="banner center">
+      <p>PENTA News</p>
+    </div>
+
+    <!--  수정폼  -->
+    <div class="form-container">
+
+      <div class="form" id="form">
+
+        <div class="row row-2 top">
+          <div class="col">
+            <div class="label">제목<span class="required">*</span></div>
+            <div class="content">
+              <input type="text" class="input" name="title" id="title" th:value="${newsDTO.title}"/>
+            </div>
+          </div>
+          <div class="col">
+            <div class="label">구분<span class="required">*</span></div>
+            <div class="content">
+              <select class="category select" name="category" id="category">
+                <option th:each="category : ${categoryList}"
+                        th:text="${category.value}"
+                        th:value="${category.name()}"
+                        th:selected="${newsDTO.category}"
+                >일반</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="row row-1">
+          <div class="col">
+            <div class="label">닉네임<span class="required">*</span></div>
+            <div class="content">
+              <input type="text" class="input" name="nickname" id="nickname" th:value="${newsDTO.nickname}"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="row row-1">
+          <div class="col">
+            <div class="label">비밀번호<span class="required">*</span></div>
+            <div class="content">
+              <input type="text" class="input" name="password" id="password"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="row row-1">
+          <div class="col">
+            <div class="label">내용<span class="required">*</span></div>
+            <div class="content">
+              <textarea class="input" rows="10" name="content" id="content" th:text="${newsDTO.content}"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="row row-1">
+          <div class="col">
+            <div class="label">첨부파일</div>
+            <div class="content">
+              <input type="file" class="" name="newsFile" id="newsFile" onchange="chooseFile(this)"/>
+              <div>파일형식 : JPG, PNG, hwp, PDF, 첨부파일 용량제한 2MB</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 하단 버튼 -->
+      <div class="button-container">
+        <div class="left">
+<!--          <button class="delete button">삭제</button>-->
+        </div>
+        <div class="right">
+          <button class="back button" onclick="goBack()">취소</button>
+          <button class="button" onclick="update()">수정</button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</th:block>
+
+</html>

@@ -64,14 +64,32 @@ public class NewsController {
         return "/client/news/detail";
     }
 
-    @PostMapping("/client/news/save-comment")
+
+    @PostMapping("/client/news/delete")
     @ResponseBody
-    public ApiResponse<?> saveComment(NewsCommentDTO newsCommentDTO) {
-
-        Long id = newsService.saveComment(newsCommentDTO);
-
-        return new ApiResponse<>(id);
+    public ApiResponse<Boolean> delete(NewsDTO newsDTO) {
+        ApiResponse<Boolean> response = newsService.delete(newsDTO);
+        return response;
     }
 
+
+    // news 조회해서 password 매칭만 함
+    @PostMapping("/client/news/match-password")
+    @ResponseBody
+    public ApiResponse<Boolean> matchPassword(NewsDTO newsDTO) {
+        ApiResponse<Boolean> response = newsService.matchPassword(newsDTO);
+        return response;
+    }
+
+
+    @GetMapping("/client/news/update/{id}")
+    public String update(@PathVariable long id, Model model) {
+        // 뉴스만 따로 가져오는 것도 고려해보자 (아래 메서드는 댓글도 다 가져오는데, 수정페이지에선 댓글 필요 없음)
+        ApiResponse<NewsDTO> response = newsService.findNews(id);
+
+        model.addAttribute("categoryList", NewsCategoryEnum.values());
+        model.addAttribute("newsDTO", response.getData());
+        return "/client/news/update";
+    }
 
 }

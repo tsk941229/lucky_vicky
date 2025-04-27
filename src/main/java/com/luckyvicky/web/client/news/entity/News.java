@@ -1,6 +1,7 @@
 package com.luckyvicky.web.client.news.entity;
 
 
+import com.luckyvicky.web.client.common.dto.FileDTO;
 import com.luckyvicky.web.client.common.entity.BaseEntity;
 import com.luckyvicky.web.client.news.dto.NewsCommentDTO;
 import com.luckyvicky.web.client.news.dto.NewsDTO;
@@ -30,7 +31,7 @@ public class News extends BaseEntity {
 //    @JoinColumn(name = "parent_id") // 조인컬럼 명시 안하면 <필드명>_id로 들어감 즉, 생략가능!
     private News parent;
 
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
     private List<News> replyList = new ArrayList<News>();
 
     @Enumerated(EnumType.STRING)
@@ -60,8 +61,8 @@ public class News extends BaseEntity {
                 .build();
     }
 
-    // 댓글 있을 때 댓글DTO List랑 같이
-    public static NewsDTO toDTO(News news, List<NewsCommentDTO> newsCommentDTOList) {
+    // 파일DTO, 댓글DTO List랑 같이
+    public static NewsDTO toDTO(News news, FileDTO newsFileDTO, List<NewsCommentDTO> newsCommentDTOList) {
         return NewsDTO.builder()
                 .id(news.getId())
                 .parentId(news.getParent() != null ? news.getParent().getId() : null)
@@ -74,6 +75,7 @@ public class News extends BaseEntity {
                 .likes(news.getLikes())
                 .createDt(news.getCreateDt())
                 .updateDt(news.getUpdateDt())
+                .newsFileDTO(newsFileDTO)
                 .newsCommentDTOList(newsCommentDTOList)
                 .build();
     }

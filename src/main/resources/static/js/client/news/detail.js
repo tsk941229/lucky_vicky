@@ -19,7 +19,7 @@ const saveComment = async (newsId) => {
 
     if(!confirm("댓글 등록 하시겠습니까?")) return;
 
-    const {status} = await fetchPOST("/client/news/save-comment", objToFormData(commentParam));
+    const {status} = await fetchPOST("/client/news/comment/save", objToFormData(commentParam));
 
     if(!status) {
         alert("등록에 실패했습니다.");
@@ -68,23 +68,158 @@ const clearCommentInput = () => {
 }
 
 
+// TODO: 리팩토링 (삭제 작업 모듈화 comment, news)
 /******************** 댓글 삭제 모달 ********************/
-const showDeleteModal = (commentId) => {
+const showDeleteCommentModal = (commentId) => {
     // 모달에 id 넘겨주기
     getDom("comment-delete-modal").setAttribute("data-id", commentId);
 
     show(getDom("comment-delete-modal"));
     getDom("comment-delete-password").focus();
 }
-const closeDeleteModel = () => {
+const closeDeleteCommentModal = () => {
     hide(getDom("comment-delete-modal"));
     getDom("comment-delete-password").value = "";
 }
 
-const deleteComment = () => {
+// 댓글 삭제
+const deleteComment = async () => {
     // 넘겨 받은 id
-    const id = getDom("comment-delete-modal").dataset.id;
+    const commentId = getDom("comment-delete-modal").dataset.id;
+    const $password = getDom("comment-delete-password");
+
+    let param = {
+        id: commentId,
+        password: $password.value
+    }
+
+    const formData = objToFormData(param);
+
+    const {status, data} = await fetchPOST("/client/news/comment/delete", formData);
+
+    if(!status) {
+        alert("삭제에 실패했습니다.");
+        return;
+    }
+
+    if(!data) {
+        alert("비밀번호가 일치하지 않습니다.");
+        $password.focus();
+        return;
+    }
+
+    if(!confirm("삭제 하시겠습니까?")) return;
+
+    alert("삭제가 완료되었습니다.");
+    // TODO 비동기 업데이트
+    reload();
+
+}
+
+/******************** 파일 다운로드 ********************/
+const newsFileDownload = async (el) => {
+
+    const fileParam = {
+        savePath: el.dataset.savePath,
+        saveName: el.dataset.saveName,
+        extension: el.dataset.extension,
+        originalName: el.dataset.originalName,
+    }
+
+    const formData = objToFormData(fileParam);
+
+    const {status, data} = await fetchPOST("/client/file/download", formData);
+
+    console.log("data", data);
+
+}
 
 
+/******************** 뉴스 삭제 모달 ********************/
+const showDeleteNewsModal = (newsId) => {
+    // 모달에 id 넘겨주기
+    getDom("news-delete-modal").setAttribute("data-id", newsId);
+
+    show(getDom("news-delete-modal"));
+    getDom("news-delete-password").focus();
+}
+const closeDeleteNewsModal = () => {
+    hide(getDom("news-delete-modal"));
+    getDom("news-delete-password").value = "";
+}
+
+// 뉴스 삭제
+const deleteNews = async () => {
+    // 넘겨 받은 id
+    const newsId = getDom("news-delete-modal").dataset.id;
+    const $password = getDom("news-delete-password");
+
+    let param = {
+        id: newsId,
+        password: $password.value
+    }
+
+    const formData = objToFormData(param);
+
+    const {status, data} = await fetchPOST("/client/news/delete", formData);
+
+    if(!status) {
+        alert("삭제에 실패했습니다.");
+        return;
+    }
+
+    if(!data) {
+        alert("비밀번호가 일치하지 않습니다.");
+        $password.focus();
+        return;
+    }
+
+    if(!confirm("삭제 하시겠습니까?")) return;
+
+    alert("삭제가 완료되었습니다.");
+    goTo("/client/news/list");
+
+}
+
+/******************** 뉴스 수정 모달 ********************/
+const showUpdateNewsModal = (newsId) => {
+    // 모달에 id 넘겨주기
+    getDom("news-update-modal").setAttribute("data-id", newsId);
+
+    show(getDom("news-update-modal"));
+    getDom("news-update-password").focus();
+}
+const closeUpdateNewsModal = () => {
+    hide(getDom("news-update-modal"));
+    getDom("news-update-password").value = "";
+}
+
+// 비밀번호 체크, 뉴스 수정폼 이동
+const goNewsUpdateForm = async () => {
+    // 넘겨 받은 id
+    const newsId = getDom("news-update-modal").dataset.id;
+    const $password = getDom("news-update-password");
+
+    let param = {
+        id: newsId,
+        password: $password.value
+    }
+
+    const formData = objToFormData(param);
+
+    const {status, data} = await fetchPOST("/client/news/match-password", formData);
+
+    if(!status) {
+        alert("조회에 실패했습니다.");
+        return;
+    }
+
+    if(!data) {
+        alert("비밀번호가 일치하지 않습니다.");
+        $password.focus();
+        return;
+    }
+
+    goTo(`/client/news/update/${newsId}`);
 
 }

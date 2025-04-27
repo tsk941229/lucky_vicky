@@ -182,8 +182,8 @@
   background-color: darkred;
 }
 
-/******************** 댓글 삭제 모달 ********************/
-.comment-delete-modal {
+/******************** 삭제 모달 ********************/
+.password-modal {
   display: none;
   position: fixed;
   right: 5%;
@@ -220,7 +220,7 @@
 .modal-password-input {
   width: 63%;
 }
-.delete-execute-button {
+.execute-button {
   position: absolute;
   right: 20px;
 }

@@ -1,5 +1,6 @@
 package com.luckyvicky.web.client.news.dto;
 
+import com.luckyvicky.web.client.common.dto.FileDTO;
 import com.luckyvicky.web.client.news.entity.News;
 import com.luckyvicky.web.client.news.enums.NewsCategoryEnum;
 import lombok.*;
@@ -29,7 +30,10 @@ public class NewsDTO {
     private LocalDateTime createDt;
     private LocalDateTime updateDt;
 
+    // 받을 때
     private MultipartFile newsFile;
+    // 쓸 때
+    private FileDTO newsFileDTO;
 
     private Long newsCommentCount;
     private List<NewsCommentDTO> newsCommentDTOList;

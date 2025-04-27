@@ -21,4 +21,13 @@ public class NewsCommentDTO {
     private LocalDateTime createDt;
     private LocalDateTime updateDt;
 
+    // parent, news 제외
+    public NewsCommentDTO(Long id, String nickname, String password, String content, LocalDateTime createDt, LocalDateTime updateDt) {
+        this.id = id;
+        this.nickname = nickname;
+        this.password = password;
+        this.content = content;
+        this.createDt = createDt;
+        this.updateDt = updateDt;
+    }
 }

@@ -37,18 +37,4 @@ public class NewsComment extends BaseEntity {
 
     private String password;
 
-
-    public static NewsCommentDTO toDTO(NewsComment newsComment) {
-        return NewsCommentDTO.builder()
-                .id(newsComment.getId())
-                .newsId(newsComment.getNews() != null ? newsComment.getNews().getId() : null)
-                .parentId(newsComment.getParent() != null ? newsComment.getParent().getId() : null)
-                .nickname(newsComment.getNickname())
-                .password(newsComment.getPassword())
-                .content(newsComment.getContent())
-                .createDt(newsComment.getCreateDt())
-                .updateDt(newsComment.getUpdateDt())
-                .build();
-    }
-
 }

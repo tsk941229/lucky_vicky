@@ -48,9 +48,23 @@
       <!-- 컨텐츠 -->
       <div class="content-body">
 
+        <!-- 파일 -->
         <div class="file">
           <span>첨부파일</span>
-          <a class="file-name">없음</a>
+          <!-- 파일 없을 때 -->
+          <a class="file-name" th:if="${newsDTO.newsFileDTO == null}">없음</a>
+
+          <!-- 파일 있을 때 -->
+          <th:block th:if="${newsDTO.newsFileDTO != null}">
+            <a class="file-name" id="news-file"
+               th:text="${newsDTO.newsFileDTO.originalName}"
+               th:attr="data-save-path=${newsDTO.newsFileDTO.savePath}
+                      , data-save-name=${newsDTO.newsFileDTO.saveName}
+                      , data-extension=${newsDTO.newsFileDTO.extension}
+                      , data-original-name=${newsDTO.newsFileDTO.originalName}"
+               onclick="newsFileDownload(this)"
+            ></a>
+          </th:block>
         </div>
 
         <div class="content" th:text="${newsDTO.content}">
@@ -61,7 +75,7 @@
       <!-- 댓글 -->
       <div class="comment">
 
-        <div class="comment-top">댓글 N</div>
+        <div class="comment-top" th:text="|댓글 ${newsDTO.newsCommentDTOList.size()}|">댓글 N</div>
 
         <!-- 댓글 등록 폼 -->
         <div class="comment-save">
@@ -102,7 +116,7 @@
               <div class="comment-detail-container-left" th:text="${comment.content}">댓글입니다. 댓글입니다. 댓글입니다.</div>
               <div class="comment-detail-container-right">
                 <div th:text="${#temporals.format(comment.createDt, 'yyyy-MM-dd HH:mm')}">2025.01.05 09:20</div>
-                <button class="comment-detail-delete-button button" th:onclick="showDeleteModal('[[${comment.id}]]')">X</button>
+                <button class="comment-detail-delete-button button" th:onclick="showDeleteCommentModal('[[${comment.id}]]')">X</button>
               </div>
             </div>
             <button class="comment-detail-toggle-reply-button button">답글</button>
@@ -119,8 +133,8 @@
         </div>
         <div class="content-button-right">
           <button class="reply-button button">답글</button>
-          <button class="update-button button">수정</button>
-          <button class="delete-button button">삭제</button>
+          <button class="update-button button" th:onclick="showUpdateNewsModal('[[${newsDTO.id}]]')">수정</button>
+          <button class="delete-button button" th:onclick="showDeleteNewsModal('[[${newsDTO.id}]]')">삭제</button>
         </div>
 
       </div>
@@ -130,15 +144,39 @@
   </div>
 
 
-  <!-- 삭제 모달 -->
-  <div class="comment-delete-modal" id="comment-delete-modal">
+  <!-- 댓글 삭제 패스워드 모달 -->
+  <div class="password-modal" id="comment-delete-modal">
     <div>
-      <button class="close-button button" onclick="closeDeleteModel()">X</button>
+      <button class="close-button button" onclick="closeDeleteCommentModal()">X</button>
     </div>
     <div class="modal-title">비밀번호</div>
     <div class="modal-content-container">
       <input type="password" class="modal-password-input input" id="comment-delete-password" autocomplete="off"/>
-      <button type="button" class="delete-execute-button button" onclick="deleteComment()">확인</button>
+      <button type="button" class="execute-button button" onclick="deleteComment()">확인</button>
+    </div>
+  </div>
+
+  <!-- 뉴스 삭제 패스워드 모달 -->
+  <div class="password-modal" id="news-delete-modal">
+    <div>
+      <button class="close-button button" onclick="closeDeleteNewsModal()">X</button>
+    </div>
+    <div class="modal-title">비밀번호</div>
+    <div class="modal-content-container">
+      <input type="password" class="modal-password-input input" id="news-delete-password" autocomplete="off"/>
+      <button type="button" class="execute-button button" onclick="deleteNews()">확인</button>
+    </div>
+  </div>
+
+  <!-- 뉴스 수정 패스워드 모달 -->
+  <div class="password-modal" id="news-update-modal">
+    <div>
+      <button class="close-button button" onclick="closeUpdateNewsModal()">X</button>
+    </div>
+    <div class="modal-title">비밀번호</div>
+    <div class="modal-content-container">
+      <input type="password" class="modal-password-input input" id="news-update-password" autocomplete="off"/>
+      <button type="button" class="execute-button button" onclick="goNewsUpdateForm()">확인</button>
     </div>
   </div>
 

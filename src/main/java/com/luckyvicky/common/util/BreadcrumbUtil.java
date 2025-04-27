@@ -17,6 +17,7 @@ public class BreadcrumbUtil {
         breadcrumbMap.put("list", "목록");
         breadcrumbMap.put("detail", "상세");
         breadcrumbMap.put("form", "등록");
+        breadcrumbMap.put("update", "수정");
 
         // 페이지
         breadcrumbMap.put("news", "PENTA News");

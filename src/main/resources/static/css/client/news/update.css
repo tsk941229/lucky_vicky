@@ -1,0 +1,91 @@
+.container {
+  margin-top: 10px;
+}
+
+/******************** 배너 ********************/
+.banner {
+  background-color: #f9f9f9;
+}
+
+.banner p {
+  font-size: xx-large;
+  font-weight: bold;
+}
+
+/******************** 등록폼 ********************/
+.form-container {
+  margin: 30px 100px;
+}
+
+.form .row {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  border-bottom: 1px solid gray;
+}
+
+.form .col {
+  flex: 1;
+  display: flex;
+  justify-content: start;
+  align-items: stretch;
+}
+
+.row .row-1 {
+  flex: 1;
+}
+
+.row .row-2 {
+  flex: 1;
+}
+
+.top {
+  border-top: 1px solid gray;
+}
+
+.col .label {
+  background-color: lightgray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+  border-right: 1px solid gray;
+  margin-right: 10px;
+}
+
+.col .label .required {
+  margin: 0px 5px;
+  color: red;
+}
+
+.col .content {
+  width: 70%;
+  margin: 5px 0;
+}
+
+.col .input {
+  max-width: 370px;
+}
+
+/******************** 하단 버튼 ********************/
+.button-container {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.button-container .delete {
+  background-color: #ff0000;
+}
+.button-container .delete:hover {
+  background-color: #cd0000;
+}
+
+.button-container .back {
+  background-color: gray;
+}
+.button-container .back:hover {
+  background-color: #666666;
+}

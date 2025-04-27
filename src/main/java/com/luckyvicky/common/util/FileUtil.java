@@ -1,5 +1,6 @@
 package com.luckyvicky.common.util;
 
+import com.luckyvicky.web.client.common.dto.FileDTO;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,7 +13,7 @@ import java.util.UUID;
 public class FileUtil {
 
 
-    public Map<String, String> upload(MultipartFile file) {
+    public FileDTO upload(MultipartFile file) {
 
         try {
 
@@ -38,17 +39,13 @@ public class FileUtil {
             // 파일 저장
             file.transferTo(new File(fullPath));
 
-            // fileInfoMap 반환
-            Map<String, String> fileInfoMap = new HashMap<String, String>();
-
-            fileInfoMap.put("originalName", originalName);
-            fileInfoMap.put("extension", extension);
-            fileInfoMap.put("size", String.valueOf(size));
-            fileInfoMap.put("savePath", savePath);
-            fileInfoMap.put("saveName", saveName);
-            fileInfoMap.put("fullPath", fullPath);
-
-            return fileInfoMap;
+            return FileDTO.builder()
+                    .originalName(originalName)
+                    .extension(extension)
+                    .size(size)
+                    .savePath(savePath)
+                    .saveName(saveName)
+                    .build();
 
         } catch (Exception e) {
             throw new RuntimeException("파일 업로드 실패 :: FileUtil.upload()", e);
