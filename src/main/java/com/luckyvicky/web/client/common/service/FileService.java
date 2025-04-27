@@ -15,12 +15,10 @@ import java.net.MalformedURLException;
 @Service
 public class FileService {
 
-    public ResponseEntity<Resource> download(FileDTO fileDTO) {
-
-        String fullPath = fileDTO.getSavePath() + fileDTO.getSaveName() + "." + fileDTO.getExtension();
-        File file = new File(fullPath);
+    public ResponseEntity<Resource> download(String fullPath) {
 
         try {
+            File file = new File(fullPath);
             Resource fileResource = new UrlResource(file.toURI());
 
             if(file.exists()) {
@@ -32,7 +30,7 @@ public class FileService {
             }
 
         } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("파일 다운로드 실패 :: FileService.download() ", e);
         }
 
     }
