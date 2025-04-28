@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.luckyvicky.web.client.news.entity.QNews.news;
@@ -52,13 +53,22 @@ public class NewsService {
 
         try {
 
+            News parent = null;
+
+            // 답글일 때 (부모 있음)
+            if(newsDTO.getParentId() != null){
+                parent = newsRepository.findById(newsDTO.getParentId()).orElseThrow();
+            }
+
             // News 등록
             News news = News.builder()
+                    .parent(parent)
                     .category(newsDTO.getCategory())
                     .title(newsDTO.getTitle())
                     .content(newsDTO.getContent())
                     .nickname(newsDTO.getNickname())
                     .password(encodeUtil.encode(newsDTO.getPassword()))
+                    .depth(newsDTO.getDepth())
                     .build();
 
             newsRepository.save(news);
@@ -118,13 +128,14 @@ public class NewsService {
                             news.password,
                             news.hits,
                             news.likes,
+                            news.depth,
                             news.createDt,
                             news.updateDt,
                             newsComment.count()
                     ))
                     .from(news)
                     .leftJoin(newsComment)
-                    .on(news.id.eq(newsComment.news.id))
+                    .on(news.id.eq(newsComment.news.id)).fetchJoin()
                     .groupBy(news.id, news.parent.id)
                     .orderBy(news.id.desc())
                     .limit(pageVO.getLimit())

@@ -32,9 +32,8 @@ public class NewsComment extends BaseEntity {
     private List<NewsComment> replyList = new ArrayList<NewsComment>();
 
     private String content;
-
     private String nickname;
-
     private String password;
+    private int depth;
 
 }

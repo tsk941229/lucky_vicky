@@ -67,6 +67,30 @@ const clearCommentInput = () => {
     getDom("comment-save-password-check").value = "";
 }
 
+const goReplyForm = async (id, depth) => {
+    const param = {
+        parentId: id,
+        parentDepth: depth
+    }
+    const query = new URLSearchParams(param).toString();
+    goTo(`/client/news/form?${query}`);
+}
+
+
+/******************** 파일 다운로드 ********************/
+const newsFileDownload = async (el) => {
+
+    const {savePath, saveName, extension, originalName} = el.dataset;
+
+    const fileParam = {
+        fullPath: `${savePath}${saveName}.${extension}`,
+        originalName: originalName
+    }
+
+    await fileDownload(fileParam);
+
+}
+
 
 // TODO: 리팩토링 (삭제 작업 모듈화 comment, news)
 /******************** 댓글 삭제 모달 ********************/
@@ -115,21 +139,6 @@ const deleteComment = async () => {
     reload();
 
 }
-
-/******************** 파일 다운로드 ********************/
-const newsFileDownload = async (el) => {
-
-    const {savePath, saveName, extension, originalName} = el.dataset;
-
-    const fileParam = {
-        fullPath: `${savePath}${saveName}.${extension}`,
-        originalName: originalName
-    }
-
-    await fileDownload(fileParam);
-
-}
-
 
 /******************** 뉴스 삭제 모달 ********************/
 const showDeleteNewsModal = (newsId) => {

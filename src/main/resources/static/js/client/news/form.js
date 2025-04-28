@@ -8,16 +8,25 @@ const init = () => {
 
 const save = async () => {
 
-  const param = {
+  let param = {
     category: getDom("category").value,
     title: getDom("title").value,
     content: getDom("content").value,
     nickname: getDom("nickname").value,
     password: getDom("password").value,
+    depth: 0
   }
 
-  // 답글이면 parentId 추가
-  // param["parentId"] = 1;
+  // 답글일 때
+  const {parentId, parentDepth} = Object.fromEntries(new URLSearchParams(window.location.search));
+
+  if(parentId !== undefined && parentDepth !== undefined) {
+    param = {
+      ...param,
+      parentId: parseInt(parentId),
+      depth: parseInt(parentDepth) + 1
+    }
+  }
 
   // 파일 처리 (단일)
   const $newsFile = getDom("newsFile");

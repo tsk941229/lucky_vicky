@@ -9,12 +9,11 @@ import com.luckyvicky.web.client.news.service.NewsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -41,8 +40,20 @@ public class NewsController {
 
 
     @GetMapping("/client/news/form")
-    public String form(Model model) {
+    public String form(@RequestParam(required = false) Long parentId,
+                       @RequestParam(required = false) Integer depth,
+                       Model model) {
+
+        // 답글일 때
+        if(parentId != null && depth != null) {
+            Map<String, Object> parentInfo = new HashMap<>();
+            parentInfo.put("parentId", parentId);
+            parentInfo.put("depth", depth);
+            model.addAttribute("parentInfo", parentInfo);
+        }
+
         model.addAttribute("categoryList", NewsCategoryEnum.values());
+
         return "/client/news/form";
     }
 

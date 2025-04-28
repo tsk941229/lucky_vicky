@@ -36,12 +36,8 @@
           <div class="createDt" th:text="${#temporals.format(newsDTO.createDt, 'yyyy.MM.dd')}">2025.01.01</div>
         </div>
         <div class="content-top-right center">
-          <div class="views">
-            조회수
-          </div>
-          <div class="likes">
-            좋아요
-          </div>
+          <div class="views" th:text="|조회수 ${newsDTO.hits}|">조회수</div>
+          <div class="likes" th:text="|좋아요 ${newsDTO.likes}|">좋아요</div>
         </div>
       </div>
 
@@ -132,7 +128,7 @@
           <button class="list-button button" onclick="goTo('/client/news/list')">목록보기</button>
         </div>
         <div class="content-button-right">
-          <button class="reply-button button">답글</button>
+          <button class="reply-button button" th:onclick="goReplyForm([[${newsDTO.id}]], [[${newsDTO.depth}]])">답글</button>
           <button class="update-button button" th:onclick="showUpdateNewsModal('[[${newsDTO.id}]]')">수정</button>
           <button class="delete-button button" th:onclick="showDeleteNewsModal('[[${newsDTO.id}]]')">삭제</button>
         </div>

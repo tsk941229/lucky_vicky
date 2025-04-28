@@ -17,11 +17,12 @@ public class NewsCommentDTO {
     private String nickname;
     private String password;
     private String content;
+    private Integer depth;
 
     private LocalDateTime createDt;
     private LocalDateTime updateDt;
 
-    // parent, news 제외
+    // parent, news, depth 제외
     public NewsCommentDTO(Long id, String nickname, String password, String content, LocalDateTime createDt, LocalDateTime updateDt) {
         this.id = id;
         this.nickname = nickname;

@@ -43,6 +43,7 @@ public class News extends BaseEntity {
     private String password;
     private int hits;
     private int likes;
+    private int depth;
 
 
     public static NewsDTO toDTO(News news) {
@@ -56,6 +57,7 @@ public class News extends BaseEntity {
                 .password(news.getPassword())
                 .hits(news.getHits())
                 .likes(news.getLikes())
+                .depth(news.getDepth())
                 .createDt(news.getCreateDt())
                 .updateDt(news.getUpdateDt())
                 .build();
@@ -73,6 +75,7 @@ public class News extends BaseEntity {
                 .password(news.getPassword())
                 .hits(news.getHits())
                 .likes(news.getLikes())
+                .depth(news.getDepth())
                 .createDt(news.getCreateDt())
                 .updateDt(news.getUpdateDt())
                 .newsFileDTO(newsFileDTO)
