@@ -45,6 +45,10 @@
         <td th:text="${news.id}">번호</td>
         <td th:text="${news.category.getValue()}">구분</td>
         <td class="title">
+          <th:block th:if="${news.depth > 0}">
+            <span class="indent" th:each="i : ${#numbers.sequence(1, news.depth)}"></span>
+            <span class="reply-icon">ㄴ</span>
+          </th:block>
           <span th:text="${news.title}">제목</span>
           <span class="news-comment-count" th:if="${news.newsCommentCount > 0}" th:text="|[${news.newsCommentCount}]|">[2]</span>
         </td>

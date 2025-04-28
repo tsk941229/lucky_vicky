@@ -9,10 +9,7 @@ import com.luckyvicky.web.client.common.dto.FileDTO;
 import com.luckyvicky.web.client.news.dto.NewsCommentDTO;
 import com.luckyvicky.web.client.news.dto.NewsDTO;
 import com.luckyvicky.web.client.news.dto.NewsSearchDTO;
-import com.luckyvicky.web.client.news.entity.News;
-import com.luckyvicky.web.client.news.entity.NewsComment;
-import com.luckyvicky.web.client.news.entity.NewsFile;
-import com.luckyvicky.web.client.news.entity.QNewsComment;
+import com.luckyvicky.web.client.news.entity.*;
 import com.luckyvicky.web.client.news.enums.NewsCategoryEnum;
 import com.luckyvicky.web.client.news.repository.NewsCommentRepository;
 import com.luckyvicky.web.client.news.repository.NewsFileRepository;
@@ -54,10 +51,23 @@ public class NewsService {
         try {
 
             News parent = null;
+            Long groupId = null;
+            int orderNo = 0;
 
             // 답글일 때 (부모 있음)
             if(newsDTO.getParentId() != null){
                 parent = newsRepository.findById(newsDTO.getParentId()).orElseThrow();
+                groupId = parent.getGroupId();
+                orderNo = parent.getOrderNo() + 1;
+
+                // orderNo 밀어내기
+                jpaQueryFactory
+                        .update(news)
+                        .set(news.orderNo, news.orderNo.add(1))
+                        .where(news.groupId.eq(groupId)               // groupId == news.groupId
+                                .and(news.orderNo.goe(orderNo))       // orderNo >= news.orderNo
+                                .and(news.depth.ne(0)))          // depth != 0
+                        .execute();
             }
 
             // News 등록
@@ -69,9 +79,21 @@ public class NewsService {
                     .nickname(newsDTO.getNickname())
                     .password(encodeUtil.encode(newsDTO.getPassword()))
                     .depth(newsDTO.getDepth())
+                    .groupId(groupId)
+                    .orderNo(orderNo)
                     .build();
 
             newsRepository.save(news);
+
+            // 최상위 게시글은 save직후 groupId를 id로 넣어줌
+            if(news.getGroupId() == null){
+                jpaQueryFactory
+                        .update(QNews.news)
+                        .set(QNews.news.groupId, news.getId())
+                        .where(QNews.news.id.eq(news.getId()))
+                        .execute();
+            }
+
 
             // NewsFile 등록
             if(newsDTO.getNewsFile() != null && !newsDTO.getNewsFile().isEmpty()) {
@@ -129,6 +151,8 @@ public class NewsService {
                             news.hits,
                             news.likes,
                             news.depth,
+                            news.groupId,
+                            news.orderNo,
                             news.createDt,
                             news.updateDt,
                             newsComment.count()
@@ -137,7 +161,7 @@ public class NewsService {
                     .leftJoin(newsComment)
                     .on(news.id.eq(newsComment.news.id)).fetchJoin()
                     .groupBy(news.id, news.parent.id)
-                    .orderBy(news.id.desc())
+                    .orderBy(news.groupId.desc(), news.orderNo.asc(), news.createDt.desc())
                     .limit(pageVO.getLimit())
                     .offset(pageVO.getStartIndex())
                     .fetch();

@@ -44,24 +44,9 @@ public class News extends BaseEntity {
     private int hits;
     private int likes;
     private int depth;
+    private Long groupId;
+    private int orderNo;
 
-
-    public static NewsDTO toDTO(News news) {
-        return NewsDTO.builder()
-                .id(news.getId())
-                .parentId(news.getParent() != null ? news.getParent().getId() : null)
-                .category(news.getCategory())
-                .title(news.getTitle())
-                .content(news.getContent())
-                .nickname(news.getNickname())
-                .password(news.getPassword())
-                .hits(news.getHits())
-                .likes(news.getLikes())
-                .depth(news.getDepth())
-                .createDt(news.getCreateDt())
-                .updateDt(news.getUpdateDt())
-                .build();
-    }
 
     // 파일DTO, 댓글DTO List랑 같이
     public static NewsDTO toDTO(News news, FileDTO newsFileDTO, List<NewsCommentDTO> newsCommentDTOList) {
