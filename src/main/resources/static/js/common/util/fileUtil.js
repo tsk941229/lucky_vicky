@@ -1,3 +1,27 @@
+/*
+    fileParam = { fullPath, originalName }
+ */
+const fileDownload = async (fileParam) => {
+
+    const response = await fetchGET("/client/file/download", fileParam);
+
+    if(!response.ok && response.status === 404) {
+        alert(`파일이 존재하지 않습니다.`);
+        return;
+    }
+
+    const blob = await response.blob();
+
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = fileParam.originalName;
+    link.click();
+
+    // 사용 후 삭제
+    URL.revokeObjectURL(link.href);
+    link.remove();
+}
+
 // 파일형식 : JPG, PNG, hwp, PDF, 첨부파일 용량제한 2MB
 // 필요하면 (제한 용량, 형식 사용처에서 넘기는걸로)
 const validateFile = (fileParam) => {

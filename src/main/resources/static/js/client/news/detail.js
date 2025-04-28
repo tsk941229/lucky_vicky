@@ -119,16 +119,14 @@ const deleteComment = async () => {
 /******************** 파일 다운로드 ********************/
 const newsFileDownload = async (el) => {
 
-    const savePath = el.dataset.savePath;
-    const saveName = el.dataset.saveName;
-    const extension = el.dataset.extension;
-    const originalName = el.dataset.originalName;
+    const {savePath, saveName, extension, originalName} = el.dataset;
 
     const fileParam = {
-        fullPath: `${savePath}${saveName}.${extension}`
+        fullPath: `${savePath}${saveName}.${extension}`,
+        originalName: originalName
     }
 
-    const response = await fetchGET("/client/file/download", fileParam);
+    await fileDownload(fileParam);
 
 }
 

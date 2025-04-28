@@ -224,3 +224,10 @@
   position: absolute;
   right: 20px;
 }
+
+/* 파일 */
+.file a {
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: underline;
+}
