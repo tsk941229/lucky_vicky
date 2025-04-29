@@ -13,6 +13,10 @@ java {
     }
 }
 
+bootJar {
+    archiveFileName = 'luckyvicky.jar'
+}
+
 repositories {
     mavenCentral()
 }

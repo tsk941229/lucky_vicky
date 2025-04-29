@@ -1,0 +1,11 @@
+# 자바 17 이미지
+FROM openjdk:17-jdk-slim
+
+# JAR 파일 복사
+COPY build/libs/luckyvicky.jar /app/luckyvicky.jar
+
+# 애플리케이션 실행
+CMD ["java", "-jar", "/app/luckyvicky.jar"]
+
+# 포트
+EXPOSE 8080
