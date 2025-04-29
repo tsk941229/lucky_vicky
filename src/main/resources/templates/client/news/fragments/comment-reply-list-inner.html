@@ -14,7 +14,7 @@
           <div class="comment-detail-container-left" th:text="${commentReply.content}">댓글입니다. 댓글입니다. 댓글입니다.</div>
           <div class="comment-detail-container-right">
             <div th:text="${#temporals.format(commentReply.createDt, 'yyyy-MM-dd HH:mm')}">2025.01.05 09:20</div>
-            <button class="comment-detail-delete-button button">X</button>
+            <button class="comment-detail-delete-button button" th:onclick="showDeleteCommentReplyModal('[[${commentReply.id}]]')">X</button>
           </div>
         </div>
       </div>

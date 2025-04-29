@@ -117,7 +117,7 @@
             </div>
             <button class="comment-detail-toggle-reply-button button" th:onclick="toggleCommentReply('[[${comment.id}]]')">
               <span>답글</span>
-              <span th:if="${comment.replyCount > 0}" th:text="${comment.replyCount}"></span>
+              <span th:id="|replyCount-${comment.id}|" th:if="${comment.replyCount > 0}" th:text="${comment.replyCount}"></span>
             </button>
 
             <!-- 대댓글 -->
@@ -190,6 +190,18 @@
     <div class="modal-content-container">
       <input type="password" class="modal-password-input input" id="comment-delete-password" autocomplete="off"/>
       <button type="button" class="execute-button button" onclick="deleteComment()">확인</button>
+    </div>
+  </div>
+
+  <!-- 대댓글(댓글의 답글) 삭제 패스워드 모달 -->
+  <div class="password-modal" id="comment-reply-delete-modal">
+    <div>
+      <button class="close-button button" onclick="closeDeleteCommentReplyModal()">X</button>
+    </div>
+    <div class="modal-title">비밀번호</div>
+    <div class="modal-content-container">
+      <input type="password" class="modal-password-input input" id="comment-reply-delete-password" autocomplete="off"/>
+      <button type="button" class="execute-button button" onclick="deleteCommentReply()">확인</button>
     </div>
   </div>
 

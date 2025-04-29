@@ -102,9 +102,13 @@ const saveCommentReply = async (newsId, commentId) => {
 
     alert("등록이 완료되었습니다.");
 
+    // 카운트 up (임시)
+    const $repplyCount = getDom(`replyCount-${commentId}`);
+    $repplyCount.textContent = parseInt($repplyCount.textContent) + 1;
+
     clearCommentReplyInput(commentId);
 
-    getCommentReplyList(commentId);
+    await getCommentReplyList(commentId);
 
 }
 
@@ -129,12 +133,12 @@ const getCommentReplyList = async (commentId) => {
 
 }
 
-const toggleCommentReply = (commentId) => {
+const toggleCommentReply = async (commentId) => {
     const $commentReply = getDom(`comment-reply-${commentId}`);
     toggle($commentReply);
 
     // 이미 조회 한번 했으면 조회 안하도록
-    getCommentReplyList(commentId);
+    await getCommentReplyList(commentId);
 }
 
 
@@ -200,6 +204,60 @@ const deleteComment = async () => {
     closeDeleteCommentModal();
     // TODO 비동기 업데이트
     reload();
+
+}
+
+/******************** 대댓글(답글) 삭제 모달 ********************/
+const showDeleteCommentReplyModal = (commentReplyId) => {
+    // 모달에 id 넘겨주기
+    getDom("comment-reply-delete-modal").setAttribute("data-id", commentReplyId);
+    // getDom("comment-reply-delete-modal").setAttribute("data-comment-id", commentId);
+
+    show(getDom("comment-reply-delete-modal"));
+    getDom("comment-reply-delete-password").focus();
+}
+
+const closeDeleteCommentReplyModal = () => {
+    hide(getDom("comment-reply-delete-modal"));
+    getDom("comment-reply-delete-password").value = "";
+}
+
+// 대댓글 삭제
+const deleteCommentReply = async () => {
+    // 넘겨 받은 id
+    const commentReplyId = getDom("comment-reply-delete-modal").dataset.id;
+    // const commentId = getDom("comment-reply-delete-modal").dataset.commentId;
+    const $password = getDom("comment-reply-delete-password");
+
+    let param = {
+        id: commentReplyId,
+        password: $password.value
+    }
+
+    const formData = objToFormData(param);
+
+    const {status, data} = await fetchPOST("/client/news/comment/delete", formData);
+
+    if(!status) {
+        alert("삭제에 실패했습니다.");
+        return;
+    }
+
+    if(!data) {
+        alert("비밀번호가 일치하지 않습니다.");
+        $password.focus();
+        return;
+    }
+
+    if(!confirm("삭제 하시겠습니까?")) return;
+
+    alert("삭제가 완료되었습니다.");
+
+    closeDeleteCommentModal();
+    // TODO 비동기 업데이트
+    reload();
+
+    // await getCommentReplyList(commentId);
 
 }
 

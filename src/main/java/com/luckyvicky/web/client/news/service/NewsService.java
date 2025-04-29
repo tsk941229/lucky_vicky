@@ -15,11 +15,13 @@ import com.luckyvicky.web.client.news.repository.NewsCommentRepository;
 import com.luckyvicky.web.client.news.repository.NewsFileRepository;
 import com.luckyvicky.web.client.news.repository.NewsRepository;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
@@ -135,6 +137,7 @@ public class NewsService {
             Long totalCount = jpaQueryFactory
                     .select(news.count())
                     .from(news)
+                    .where(titleOrContentContains(newsSearchDTO.getKeyword()))
                     .fetchOne();
 
             // 페이징 정보
@@ -161,7 +164,8 @@ public class NewsService {
                     .from(news)
                     .leftJoin(newsComment)
                     .on(news.id.eq(newsComment.news.id)).fetchJoin()
-                    .where(newsComment.parent.isNull())
+                    .where(newsComment.parent.isNull()
+                            .and(titleOrContentContains(newsSearchDTO.getKeyword())))
                     .groupBy(news.id, news.parent.id)
                     .orderBy(news.groupId.desc(), news.orderNo.asc(), news.createDt.desc())
                     .limit(pageVO.getLimit())
@@ -178,6 +182,13 @@ public class NewsService {
             throw new RuntimeException("News Page 조회 실패 :: NewsService.findNewsPage()", e);
         }
 
+    }
+
+    // news title, content like %% (keyword가 null일 때 null 반환 -> where절 무시)
+    private BooleanExpression titleOrContentContains(String keyword) {
+        if(!StringUtils.hasText(keyword)) return null;
+
+        return QNews.news.title.containsIgnoreCase(keyword).or(QNews.news.content.containsIgnoreCase(keyword));
     }
 
 

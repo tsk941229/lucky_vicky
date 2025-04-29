@@ -10,7 +10,13 @@ const init = async () => {
   // 이전 검색 정보 가져올 수 있음
   let page = 1;
   await searchPage(page);
-  console.log("searchPage 호출");
+
+  // 검색 인풋에 엔터키 추가
+  getDom("keyword").addEventListener("keyup", async(e) => {
+    if(e.key === "Enter") {
+      await searchPage(1);
+    }
+  });
 }
 
 
@@ -32,11 +38,6 @@ const searchPage = async (page) => {
   container.innerHTML = await response.text();
 
 }
-
-const goDetail = () => {
-
-}
-
 
 /******************** 키워드 관련 ********************/
 // 키워드 지우고 focus
