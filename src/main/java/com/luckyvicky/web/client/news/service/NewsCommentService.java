@@ -7,9 +7,15 @@ import com.luckyvicky.web.client.news.entity.News;
 import com.luckyvicky.web.client.news.entity.NewsComment;
 import com.luckyvicky.web.client.news.repository.NewsCommentRepository;
 import com.luckyvicky.web.client.news.repository.NewsRepository;
+import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+import static com.luckyvicky.web.client.news.entity.QNewsComment.newsComment;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +24,7 @@ public class NewsCommentService {
     private final NewsRepository newsRepository;
     private final NewsCommentRepository newsCommentRepository;
     private final EncodeUtil encodeUtil;
+    private final JPAQueryFactory jpaQueryFactory;
 
     // 댓글 저장
     @Transactional
@@ -25,10 +32,17 @@ public class NewsCommentService {
 
         try {
 
+            NewsComment parent = null;
+
+            if(newsCommentDTO.getParentId() != null) {
+                parent = newsCommentRepository.findById(newsCommentDTO.getParentId()).orElseThrow();
+            }
+
             News news = newsRepository.findById(newsCommentDTO.getNewsId()).orElseThrow();
 
             NewsComment newsComment = NewsComment.builder()
                     .news(news)
+                    .parent(parent)
                     .content(newsCommentDTO.getContent())
                     .nickname(newsCommentDTO.getNickname())
                     .password(encodeUtil.encode(newsCommentDTO.getPassword()))
@@ -43,6 +57,34 @@ public class NewsCommentService {
         }
 
     }
+
+    // 대댓글 조회
+    @Transactional
+    public ApiResponse<List<NewsCommentDTO>> replyList(Long commentId) {
+
+        try {
+
+            List<NewsCommentDTO> replyList = jpaQueryFactory
+                    .select(Projections.constructor(NewsCommentDTO.class,
+                            newsComment.id,
+                            newsComment.nickname,
+                            newsComment.password,
+                            newsComment.content,
+                            newsComment.createDt,
+                            newsComment.updateDt
+                    ))
+                    .from(newsComment)
+                    .where(newsComment.parent.id.eq(commentId))
+                    .fetch();
+
+            return new ApiResponse<>(replyList);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
 
     // 댓글 삭제
     @Transactional

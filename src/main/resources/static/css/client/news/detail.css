@@ -75,19 +75,19 @@
   padding: 10px;
 }
 
-.comment-save .input-container {
+.comment-input-container {
   display: flex;
   flex-direction: row;
 }
 
-.comment-save .input-container .auth {
+.comment-input-container .auth {
   width: 20%;
 
 }
-.comment-save .input-container .auth .password, .password-check {
+.comment-input-container .auth .password, .password-check {
   margin-top: 5px;
 }
-.comment-save .input-container .comment-save-content-container {
+.comment-input-container .comment-save-content-container {
   width: 80%;
   margin-left: 20px;
 }
@@ -114,7 +114,7 @@
 }
 
 .comment-detail-container {
-  margin-top: 5px;
+  margin: 10px 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -142,6 +142,41 @@
 .comment-detail-toggle-reply-button:hover {
   background-color: #f9f9f9;
 }
+
+
+/******************** 대댓글(댓글의 답글) ********************/
+.reply-indent {
+  padding-left: 20px;
+  margin: 10px;
+  font-size: 20px;
+}
+
+.comment-reply {
+  display: none;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid gray;
+}
+
+.comment-reply-container {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+
+  border-bottom: 1px solid gray;
+
+}
+
+.comment-reply-container .reply-indent {
+  padding-left: 30px;
+}
+
+.comment-reply-container .comment-reply-detail {
+  flex: 9;
+}
+
 
 /******************** 컨텐츠 버튼 ********************/
 .content-button-container {
@@ -181,6 +216,7 @@
 .delete-button:hover {
   background-color: darkred;
 }
+
 
 /******************** 삭제 모달 ********************/
 .password-modal {

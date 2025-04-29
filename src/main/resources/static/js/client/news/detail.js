@@ -8,14 +8,16 @@ const init = () => {
 
 const saveComment = async (newsId) => {
 
-    let commentParam = {
+    const commentParam = {
         newsId: newsId,
         nickname: getDom("comment-save-nickname").value,
         password: getDom("comment-save-password").value,
         content: getDom("comment-save-content").value,
     }
 
-    if(!validateComment(commentParam)) return;
+    const passwordCheck = getDom("comment-save-password-check").value;
+
+    if(!validateComment(commentParam, passwordCheck)) return;
 
     if(!confirm("댓글 등록 하시겠습니까?")) return;
 
@@ -32,9 +34,7 @@ const saveComment = async (newsId) => {
     reload();
 }
 
-const validateComment = (param) => {
-
-    const passwordCheck = getDom("comment-save-password-check").value;
+const validateComment = (param, passwordCheck) => {
 
     if(!param.nickname) {
         alert("닉네임을 입력하세요.");
@@ -74,6 +74,67 @@ const goReplyForm = async (id, depth) => {
     }
     const query = new URLSearchParams(param).toString();
     goTo(`/client/news/form?${query}`);
+}
+
+/******************** 대댓글 (댓글의 답글) ********************/
+const saveCommentReply = async (newsId, commentId) => {
+
+    const param = {
+        newsId: newsId,
+        parentId: commentId,
+        content: getDom(`comment-reply-${commentId}-content`).value,
+        nickname: getDom(`comment-reply-${commentId}-nickname`).value,
+        password: getDom(`comment-reply-${commentId}-password`).value,
+    };
+
+    const passwordCheck = getDom(`comment-reply-${commentId}-password-check`).value;
+
+    if(!validateComment(param, passwordCheck)) return;
+
+    const {status} = await fetchPOST("/client/news/comment/save", objToFormData(param));
+
+    if(!confirm("등록 하시겠습니까?")) return;
+
+    if(!status) {
+        alert("등록에 실패했습니다.");
+        return;
+    }
+
+    alert("등록이 완료되었습니다.");
+
+    clearCommentReplyInput(commentId);
+
+    getCommentReplyList(commentId);
+
+}
+
+const clearCommentReplyInput = (commentId) => {
+    getDom(`comment-reply-${commentId}-content`).value = "";
+    getDom(`comment-reply-${commentId}-nickname`).value = "";
+    getDom(`comment-reply-${commentId}-password`).value = "";
+    getDom(`comment-reply-${commentId}-password-check`).value = "";
+}
+
+const getCommentReplyList = async (commentId) => {
+
+    const param = {
+        commentId: commentId
+    }
+
+    const response = await fetchGET('/client/news/comment/comment-reply-list-inner', param);
+
+    const container = getDom(`comment-reply-${commentId}-list-container`);
+
+    container.innerHTML = await response.text();
+
+}
+
+const toggleCommentReply = (commentId) => {
+    const $commentReply = getDom(`comment-reply-${commentId}`);
+    toggle($commentReply);
+
+    // 이미 조회 한번 했으면 조회 안하도록
+    getCommentReplyList(commentId);
 }
 
 
@@ -135,10 +196,13 @@ const deleteComment = async () => {
     if(!confirm("삭제 하시겠습니까?")) return;
 
     alert("삭제가 완료되었습니다.");
+
+    closeDeleteCommentModal();
     // TODO 비동기 업데이트
     reload();
 
 }
+
 
 /******************** 뉴스 삭제 모달 ********************/
 const showDeleteNewsModal = (newsId) => {
@@ -182,6 +246,8 @@ const deleteNews = async () => {
     if(!confirm("삭제 하시겠습니까?")) return;
 
     alert("삭제가 완료되었습니다.");
+
+    closeDeleteNewsModal();
     goTo("/client/news/list");
 
 }
@@ -225,6 +291,7 @@ const goNewsUpdateForm = async () => {
         return;
     }
 
+    closeUpdateNewsModal();
     goTo(`/client/news/update/${newsId}`);
 
 }

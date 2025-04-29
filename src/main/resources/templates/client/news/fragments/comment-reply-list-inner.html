@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+>
+
+<th:block th:fragment="comment-reply-inner">
+
+  <div th:each="commentReply : ${commentReplyList}">
+    <div class="comment-reply-container">
+      <div class="reply-indent">ㄴ</div>
+      <div class="comment-reply-detail">
+        <div class="comment-detail-nickname" th:text="${commentReply.nickname}">PENTABREED</div>
+        <div class="comment-detail-container">
+          <div class="comment-detail-container-left" th:text="${commentReply.content}">댓글입니다. 댓글입니다. 댓글입니다.</div>
+          <div class="comment-detail-container-right">
+            <div th:text="${#temporals.format(commentReply.createDt, 'yyyy-MM-dd HH:mm')}">2025.01.05 09:20</div>
+            <button class="comment-detail-delete-button button">X</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</th:block>
+
+</html>

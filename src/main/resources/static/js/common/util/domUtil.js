@@ -19,3 +19,9 @@ const hide = (el) => {
     el.style.display = "none"
 }
 
+/**
+ * Element 토글
+ */
+const toggle = (el) => {
+    el.style.display = window.getComputedStyle(el).display == "none" ? "block" : "none";
+}

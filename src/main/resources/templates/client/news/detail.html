@@ -76,7 +76,7 @@
         <!-- 댓글 등록 폼 -->
         <div class="comment-save">
 
-          <div class="input-container">
+          <div class="comment-input-container">
 
             <div class="auth">
               <input type="text" class="nickname input" name="comment-save-nickname" id="comment-save-nickname" placeholder="닉네임 입력"/>
@@ -115,7 +115,48 @@
                 <button class="comment-detail-delete-button button" th:onclick="showDeleteCommentModal('[[${comment.id}]]')">X</button>
               </div>
             </div>
-            <button class="comment-detail-toggle-reply-button button">답글</button>
+            <button class="comment-detail-toggle-reply-button button" th:onclick="toggleCommentReply('[[${comment.id}]]')">
+              <span>답글</span>
+              <span th:if="${comment.replyCount > 0}" th:text="${comment.replyCount}"></span>
+            </button>
+
+            <!-- 대댓글 -->
+            <div class="comment-reply" th:id="|comment-reply-${comment.id}|">
+
+              <div th:id="|comment-reply-${comment.id}-list-container|">
+                <th:block th:replace="~{/client/news/fragments/comment-reply-list-inner :: comment-reply-inner}"></th:block>
+              </div>
+
+              <div class="comment-save">
+                <div class="comment-input-container">
+
+                  <div class="reply-indent">ㄴ</div>
+
+                  <div class="auth">
+                    <input type="text" class="nickname input" th:id="|comment-reply-${comment.id}-nickname|" placeholder="닉네임 입력"/>
+                    <input type="password" class="password input" th:id="|comment-reply-${comment.id}-password|" placeholder="비밀번호 입력"/>
+                    <input type="password" class="password-check input" th:id="|comment-reply-${comment.id}-password-check|" placeholder="비밀번호 확인"/>
+                  </div>
+
+                  <div class="comment-save-content-container">
+                    <textarea class="input"
+                              name="comment-save-content"
+                              th:id="|comment-reply-${comment.id}-content|"
+                              placeholder="타인의 권리를 침해하거나 명예를 훼손하는 댓글은 운영원칙 및 관련 법률에 따라 제재를 받을 수 있습니다."
+                              rows="5"
+                    ></textarea>
+                  </div>
+
+                </div>
+
+                <div class="comment-save-button-container">
+                  <button class="comment-save-button button" th:onclick="saveCommentReply('[[${newsDTO.id}]]', '[[${comment.id}]]')">등록</button>
+                </div>
+
+              </div>
+
+            </div>
+
           </div>
 
         </div>
@@ -128,7 +169,7 @@
           <button class="list-button button" onclick="goTo('/client/news/list')">목록보기</button>
         </div>
         <div class="content-button-right">
-          <button class="reply-button button" th:onclick="goReplyForm([[${newsDTO.id}]], [[${newsDTO.depth}]])">답글</button>
+          <button class="reply-button button" th:onclick="goReplyForm('[[${newsDTO.id}]]', '[[${newsDTO.depth}]]')">답글</button>
           <button class="update-button button" th:onclick="showUpdateNewsModal('[[${newsDTO.id}]]')">수정</button>
           <button class="delete-button button" th:onclick="showDeleteNewsModal('[[${newsDTO.id}]]')">삭제</button>
         </div>

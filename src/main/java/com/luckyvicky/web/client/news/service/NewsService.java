@@ -15,6 +15,7 @@ import com.luckyvicky.web.client.news.repository.NewsCommentRepository;
 import com.luckyvicky.web.client.news.repository.NewsFileRepository;
 import com.luckyvicky.web.client.news.repository.NewsRepository;
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -160,6 +161,7 @@ public class NewsService {
                     .from(news)
                     .leftJoin(newsComment)
                     .on(news.id.eq(newsComment.news.id)).fetchJoin()
+                    .where(newsComment.parent.isNull())
                     .groupBy(news.id, news.parent.id)
                     .orderBy(news.groupId.desc(), news.orderNo.asc(), news.createDt.desc())
                     .limit(pageVO.getLimit())
@@ -204,19 +206,28 @@ public class NewsService {
                     .where(newsFile.news.id.eq(id))
                     .fetchOne();
 
-            // 댓글 만 가져오기 대댓글 X
+            // 대댓글 count 서브쿼리 하기 위함
+            QNewsComment comment = new QNewsComment("comment");
+            QNewsComment commentReply = new QNewsComment("commentReply");
+
+            // 댓글 가져오기
             List<NewsCommentDTO> newsCommentDTOList = jpaQueryFactory
                     .select(Projections.constructor(NewsCommentDTO.class,
-                            newsComment.id,
-                            newsComment.nickname,
-                            newsComment.password,
-                            newsComment.content,
-                            newsComment.createDt,
-                            newsComment.updateDt
+                            comment.id,
+                            comment.nickname,
+                            comment.password,
+                            comment.content,
+                            comment.createDt,
+                            comment.updateDt,
+                            JPAExpressions
+                                    .select(commentReply.count())
+                                    .from(commentReply)
+                                    .where(commentReply.parent.id.eq(comment.id))
                     ))
-                    .from(newsComment)
-                    .where(newsComment.news.id.eq(news.getId()))
-                    .orderBy(newsComment.id.desc())
+                    .from(comment)
+                    .where(comment.news.id.eq(news.getId())
+                            .and(comment.parent.isNull()))
+                    .orderBy(comment.id.desc())
                     .fetch();
 
             // 파일, 댓글 목록이랑 같이
