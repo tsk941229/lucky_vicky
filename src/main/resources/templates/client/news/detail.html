@@ -2,7 +2,7 @@
 <html lang="ko"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/client/layout/base}"
+      layout:decorate="~{client/layout/base}"
 >
 
 <th:block layout:fragment="css">
@@ -124,7 +124,7 @@
             <div class="comment-reply" th:id="|comment-reply-${comment.id}|">
 
               <div th:id="|comment-reply-${comment.id}-list-container|">
-                <th:block th:replace="~{/client/news/fragments/comment-reply-list-inner :: comment-reply-inner}"></th:block>
+                <th:block th:replace="~{client/news/fragments/comment-reply-list-inner :: comment-reply-inner}"></th:block>
               </div>
 
               <div class="comment-save">

@@ -2,7 +2,7 @@
 <html lang="ko"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/client/layout/base}"
+      layout:decorate="~{client/layout/base}"
 >
 
 <th:block layout:fragment="css">
@@ -38,7 +38,7 @@
 
       <!-- 게시판 -->
       <div id="news-container">
-        <th:block th:replace="~{/client/news/fragments/list-inner :: list-inner}"></th:block>
+        <th:block th:replace="~{client/news/fragments/list-inner :: list-inner}"></th:block>
       </div>
 
       <div class="form-container">

@@ -24,7 +24,7 @@ public class NewsController {
 
     @GetMapping("/client/news/list")
     public String list() {
-        return "/client/news/list";
+        return "client/news/list";
     }
 
     @GetMapping("/client/news/list-inner")
@@ -35,7 +35,7 @@ public class NewsController {
         model.addAttribute("newsList", response.getData());
         model.addAttribute("pageVO", response.getMetaData().get("pageVO"));
 
-        return "/client/news/fragments/list-inner";
+        return "client/news/fragments/list-inner";
     }
 
 
@@ -54,7 +54,7 @@ public class NewsController {
 
         model.addAttribute("categoryList", NewsCategoryEnum.values());
 
-        return "/client/news/form";
+        return "client/news/form";
     }
 
     @PostMapping("/client/news/save")
@@ -72,7 +72,7 @@ public class NewsController {
 
         model.addAttribute("newsDTO", response.getData());
 
-        return "/client/news/detail";
+        return "client/news/detail";
     }
 
 
@@ -100,7 +100,7 @@ public class NewsController {
 
         model.addAttribute("categoryList", NewsCategoryEnum.values());
         model.addAttribute("newsDTO", response.getData());
-        return "/client/news/update";
+        return "client/news/update";
     }
 
 }

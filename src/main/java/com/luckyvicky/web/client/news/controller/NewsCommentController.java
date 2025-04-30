@@ -32,7 +32,7 @@ public class NewsCommentController {
         ApiResponse<?> response = newsCommentService.replyList(commentId);
         model.addAttribute("commentReplyList", response.getData());
 
-        return "/client/news/fragments/comment-reply-list-inner";
+        return "client/news/fragments/comment-reply-list-inner";
     }
 
     @PostMapping("/client/news/comment/delete")

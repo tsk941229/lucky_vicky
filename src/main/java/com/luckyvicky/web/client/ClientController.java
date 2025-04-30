@@ -8,6 +8,6 @@ public class ClientController {
 
     @GetMapping("/")
     public String index() {
-        return "/client/index";
+        return "client/index";
     }
 }
