@@ -208,11 +208,11 @@ public class NewsService {
 
             if(hitsIdList != null) {
                 isViewed = hitsIdList.stream().anyMatch(hitsId -> hitsId.equals(String.valueOf(id)));
-            }
 
-            if(!isViewed){
-                news.increaseHits();
-                cookieUtil.setCookie(response, "viewedNewsIdList", String.valueOf(id));
+                if(!isViewed){
+                    news.increaseHits();
+                    cookieUtil.setCookie(response, "viewedNewsIdList", String.valueOf(id));
+                }
             }
 
             // 파일 조회
