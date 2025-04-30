@@ -117,7 +117,7 @@
             </div>
             <button class="comment-detail-toggle-reply-button button" th:onclick="toggleCommentReply('[[${comment.id}]]')">
               <span>답글</span>
-              <span th:id="|replyCount-${comment.id}|" th:if="${comment.replyCount > 0}" th:text="${comment.replyCount}"></span>
+              <span th:id="|replyCount-${comment.id}|" th:text="${comment.replyCount > 0 ? comment.replyCount : ''}"></span>
             </button>
 
             <!-- 대댓글 -->

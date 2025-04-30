@@ -6,6 +6,8 @@ import com.luckyvicky.web.client.news.dto.NewsDTO;
 import com.luckyvicky.web.client.news.dto.NewsSearchDTO;
 import com.luckyvicky.web.client.news.enums.NewsCategoryEnum;
 import com.luckyvicky.web.client.news.service.NewsService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -66,11 +68,11 @@ public class NewsController {
 
 
     @GetMapping("/client/news/detail/{id}")
-    public String detail(@PathVariable long id, Model model) {
+    public String detail(@PathVariable long id, HttpServletResponse response, HttpServletRequest request, Model model) {
 
-        ApiResponse<NewsDTO> response = newsService.findNews(id);
+        ApiResponse<NewsDTO> apiResponse = newsService.findNewsForDetail(id, response, request);
 
-        model.addAttribute("newsDTO", response.getData());
+        model.addAttribute("newsDTO", apiResponse.getData());
 
         return "client/news/detail";
     }
@@ -96,7 +98,7 @@ public class NewsController {
     @GetMapping("/client/news/update/{id}")
     public String update(@PathVariable long id, Model model) {
         // 뉴스만 따로 가져오는 것도 고려해보자 (아래 메서드는 댓글도 다 가져오는데, 수정페이지에선 댓글 필요 없음)
-        ApiResponse<NewsDTO> response = newsService.findNews(id);
+        ApiResponse<NewsDTO> response = newsService.findNewsForUpdate(id);
 
         model.addAttribute("categoryList", NewsCategoryEnum.values());
         model.addAttribute("newsDTO", response.getData());

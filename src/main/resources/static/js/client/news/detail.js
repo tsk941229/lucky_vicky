@@ -103,8 +103,9 @@ const saveCommentReply = async (newsId, commentId) => {
     alert("등록이 완료되었습니다.");
 
     // 카운트 up (임시)
-    const $repplyCount = getDom(`replyCount-${commentId}`);
-    $repplyCount.textContent = parseInt($repplyCount.textContent) + 1;
+    const $replyCount = getDom(`replyCount-${commentId}`);
+    let replyCount = isNaN(parseInt($replyCount.textContent)) ? 0 : parseInt($replyCount.textContent);
+    $replyCount.textContent = replyCount + 1;
 
     clearCommentReplyInput(commentId);
 
@@ -137,8 +138,13 @@ const toggleCommentReply = async (commentId) => {
     const $commentReply = getDom(`comment-reply-${commentId}`);
     toggle($commentReply);
 
+    if($commentReply.getAttribute("isFound") !== "Y") {
+        await getCommentReplyList(commentId);
+    }
+
     // 이미 조회 한번 했으면 조회 안하도록
-    await getCommentReplyList(commentId);
+    $commentReply.setAttribute("isFound", "Y");
+
 }
 
 

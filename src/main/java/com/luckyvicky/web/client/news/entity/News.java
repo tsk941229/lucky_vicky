@@ -68,4 +68,8 @@ public class News extends BaseEntity {
                 .build();
     }
 
+    public void increaseHits() {
+        this.hits++;
+    }
+
 }

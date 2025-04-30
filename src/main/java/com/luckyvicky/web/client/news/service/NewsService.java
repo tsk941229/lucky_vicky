@@ -1,6 +1,7 @@
 package com.luckyvicky.web.client.news.service;
 
 import com.luckyvicky.common.response.ApiResponse;
+import com.luckyvicky.common.util.CookieUtil;
 import com.luckyvicky.common.util.EncodeUtil;
 import com.luckyvicky.common.util.FileUtil;
 import com.luckyvicky.common.util.PageUtil;
@@ -18,6 +19,8 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,9 +29,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static com.luckyvicky.web.client.news.entity.QNews.news;
 import static com.luckyvicky.web.client.news.entity.QNewsComment.newsComment;
@@ -47,6 +47,7 @@ public class NewsService {
     private final EncodeUtil encodeUtil;
     private final FileUtil fileUtil;
     private final PageUtil pageUtil;
+    private final CookieUtil cookieUtil;
 
     @Transactional
     public Long save(NewsDTO newsDTO) {
@@ -196,7 +197,77 @@ public class NewsService {
      * 뉴스, 뉴스댓글, 뉴스 파일 조회 (NewsDTO)
      */
     @Transactional
-    public ApiResponse<NewsDTO> findNews(long id) {
+    public ApiResponse<NewsDTO> findNewsForDetail(long id, HttpServletResponse response, HttpServletRequest request) {
+
+        try {
+            News news = newsRepository.findById(id).orElseThrow();
+
+            // 조회수 추가 TODO: 쿠키이름 상수로
+            boolean isViewed = false;
+            List<String> hitsIdList = cookieUtil.getCookieValues(request, "viewedNewsIdList");
+
+            if(hitsIdList != null) {
+                isViewed = hitsIdList.stream().anyMatch(hitsId -> hitsId.equals(String.valueOf(id)));
+            }
+
+            if(!isViewed){
+                news.increaseHits();
+                cookieUtil.setCookie(response, "viewedNewsIdList", String.valueOf(id));
+            }
+
+            // 파일 조회
+            FileDTO newsFileDTO = jpaQueryFactory
+                    .select(Projections.constructor(FileDTO.class,
+                            newsFile.id,
+                            newsFile.originalName,
+                            newsFile.extension,
+                            newsFile.size,
+                            newsFile.savePath,
+                            newsFile.saveName,
+                            newsFile.createDt,
+                            newsFile.updateDt
+                    ))
+                    .from(newsFile)
+                    .where(newsFile.news.id.eq(id))
+                    .fetchOne();
+
+            // 대댓글 count 서브쿼리 하기 위함
+            QNewsComment comment = new QNewsComment("comment");
+            QNewsComment commentReply = new QNewsComment("commentReply");
+
+            // 댓글 가져오기
+            List<NewsCommentDTO> newsCommentDTOList = jpaQueryFactory
+                    .select(Projections.constructor(NewsCommentDTO.class,
+                            comment.id,
+                            comment.nickname,
+                            comment.password,
+                            comment.content,
+                            comment.createDt,
+                            comment.updateDt,
+                            JPAExpressions
+                                    .select(commentReply.count())
+                                    .from(commentReply)
+                                    .where(commentReply.parent.id.eq(comment.id))
+                    ))
+                    .from(comment)
+                    .where(comment.news.id.eq(news.getId())
+                            .and(comment.parent.isNull()))
+                    .orderBy(comment.id.desc())
+                    .fetch();
+
+            // 파일, 댓글 목록이랑 같이
+            NewsDTO newsDTO = News.toDTO(news, newsFileDTO, newsCommentDTOList);
+
+            return new ApiResponse<>(newsDTO);
+
+        } catch(Exception e) {
+            throw new RuntimeException("News 조회 실패 :: NewsService.findNews()", e);
+        }
+
+    }
+
+    @Transactional
+    public ApiResponse<NewsDTO> findNewsForUpdate(long id) {
 
         try {
             News news = newsRepository.findById(id).orElseThrow();

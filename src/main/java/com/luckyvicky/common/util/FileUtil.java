@@ -5,8 +5,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 @Component
@@ -22,7 +20,8 @@ public class FileUtil {
             String extension = originalName.substring(originalName.lastIndexOf(".") + 1);
             long size = file.getSize();
 
-            String prefix = "D:";
+            // TODO: 로컬, 운영 구분용 만들자 (프로퍼티 분기)
+            String prefix = "";
 
             // 경로 ex) /luckyvicky/upload/(newsFile)/(파일.확장자)
             String savePath = prefix + File.separator + "luckyvicky" + File.separator + "upload" + File.separator + file.getName() + File.separator;
