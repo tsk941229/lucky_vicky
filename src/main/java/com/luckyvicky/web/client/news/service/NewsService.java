@@ -22,11 +22,14 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -204,14 +207,18 @@ public class NewsService {
 
             // 조회수 추가 TODO: 쿠키이름 상수로
             boolean isViewed = false;
-            List<String> hitsIdList = cookieUtil.getCookieValues(request, "viewedNewsIdList");
 
-            if(hitsIdList != null) {
-                isViewed = hitsIdList.stream().anyMatch(hitsId -> hitsId.equals(String.valueOf(id)));
+            String cookieValue = cookieUtil.getCookieValue(request, "viewedNewsIdList");
+
+            if(StringUtils.hasText(cookieValue)) {
+
+                List<String> viewedIdList = new ArrayList<>(List.of(cookieValue.split(",")));
+                isViewed = viewedIdList.contains(String.valueOf(id));
 
                 if(!isViewed){
                     news.increaseHits();
-                    cookieUtil.setCookie(response, "viewedNewsIdList", String.valueOf(id));
+                    viewedIdList.add(String.valueOf(id));
+                    cookieUtil.addCookie(response, "viewedNewsIdList", String.join(",", viewedIdList));
                 }
             }
 
