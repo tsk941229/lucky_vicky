@@ -1,10 +1,7 @@
 package com.luckyvicky.web.client.news.service;
 
 import com.luckyvicky.common.response.ApiResponse;
-import com.luckyvicky.common.util.CookieUtil;
-import com.luckyvicky.common.util.EncodeUtil;
-import com.luckyvicky.common.util.FileUtil;
-import com.luckyvicky.common.util.PageUtil;
+import com.luckyvicky.common.util.*;
 import com.luckyvicky.common.vo.PageVO;
 import com.luckyvicky.web.client.common.dto.FileDTO;
 import com.luckyvicky.web.client.news.dto.NewsCommentDTO;
@@ -28,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -205,22 +203,8 @@ public class NewsService {
         try {
             News news = newsRepository.findById(id).orElseThrow();
 
-            // 조회수 추가 TODO: 쿠키이름 상수로
-            boolean isViewed = false;
-
-            String cookieValue = cookieUtil.getCookieValue(request, "viewedNewsIdList");
-
-            if(StringUtils.hasText(cookieValue)) {
-
-                List<String> viewedIdList = new ArrayList<>(List.of(cookieValue.split(",")));
-                isViewed = viewedIdList.contains(String.valueOf(id));
-
-                if(!isViewed){
-                    news.increaseHits();
-                    viewedIdList.add(String.valueOf(id));
-                    cookieUtil.addCookie(response, "viewedNewsIdList", String.join(",", viewedIdList));
-                }
-            }
+            // 조회수 추가
+            increaseHits(news, response, request);
 
             // 파일 조회
             FileDTO newsFileDTO = jpaQueryFactory
@@ -268,7 +252,37 @@ public class NewsService {
             return new ApiResponse<>(newsDTO);
 
         } catch(Exception e) {
+            e.printStackTrace();
             throw new RuntimeException("News 조회 실패 :: NewsService.findNews()", e);
+        }
+
+    }
+
+    /**
+     * 조회수 추가 TODO: 쿠키이름 상수로
+     */
+    private void increaseHits(News news, HttpServletResponse response, HttpServletRequest request) {
+
+        String cookieValue = cookieUtil.getCookieValue(request, "viewedNewsIdList");
+
+        // 쿠키값 없을 때
+        if(!StringUtils.hasText(cookieValue)) {
+            news.increaseHits();
+            cookieUtil.addCookie(response, "viewedNewsIdList", String.valueOf(news.getId()));
+            return;
+        }
+
+        boolean isViewed = false;
+
+        //! TODO: 안티패턴 없애고 json으로 수정하기 (현재 임시)
+        List<String> viewedIdList = new ArrayList<>(List.of(cookieValue.split("\\|")));
+        isViewed = viewedIdList.contains(String.valueOf(news.getId()));
+
+        if(!isViewed){
+            news.increaseHits();
+            viewedIdList.add(String.valueOf(news.getId()));
+            String a = String.join(",", viewedIdList);
+            cookieUtil.addCookie(response, "viewedNewsIdList", String.join("|", viewedIdList));
         }
 
     }
