@@ -274,14 +274,12 @@ public class NewsService {
 
         boolean isViewed = false;
 
-        //! TODO: 안티패턴 없애고 json으로 수정하기 (현재 임시)
         List<String> viewedIdList = new ArrayList<>(List.of(cookieValue.split("\\|")));
         isViewed = viewedIdList.contains(String.valueOf(news.getId()));
 
         if(!isViewed){
             news.increaseHits();
             viewedIdList.add(String.valueOf(news.getId()));
-            String a = String.join(",", viewedIdList);
             cookieUtil.addCookie(response, "viewedNewsIdList", String.join("|", viewedIdList));
         }
 

@@ -16,13 +16,17 @@ public class CookieUtil {
     public void addCookie(HttpServletResponse response, String name, String value) {
         Cookie cookie = new Cookie(name, value);
         cookie.setPath("/");
-        cookie.setMaxAge(60*60*24); // 24시간
+        cookie.setMaxAge(60*60*24); // TODO: 자정에 만료되도록 수정
         response.addCookie(cookie);
     }
 
     public String getCookieValue(HttpServletRequest request, String name) {
 
-        Optional<Cookie> optionalCookie = Arrays.stream(request.getCookies()).filter(c -> c.getName().equals(name)).findFirst();
+        Cookie[] cookies = request.getCookies();
+
+        if(cookies == null) return null;
+
+        Optional<Cookie> optionalCookie = Arrays.stream(cookies).filter(c -> c.getName().equals(name)).findFirst();
 
         if(optionalCookie.isEmpty()) return null;
 
