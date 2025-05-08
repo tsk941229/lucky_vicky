@@ -105,4 +105,12 @@ public class NewsController {
         return "client/news/update";
     }
 
+    @PostMapping("/client/news/update")
+    @ResponseBody
+    public ApiResponse<?> update(NewsDTO newsDTO) {
+        Long id = newsService.update(newsDTO);
+        ApiResponse<?> response = new ApiResponse<>(id);
+        return response;
+    }
+
 }

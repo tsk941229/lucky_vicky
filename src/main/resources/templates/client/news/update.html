@@ -43,7 +43,7 @@
                 <option th:each="category : ${categoryList}"
                         th:text="${category.value}"
                         th:value="${category.name()}"
-                        th:selected="${newsDTO.category}"
+                        th:selected="${category.name()} == ${newsDTO.category}"
                 >일반</option>
               </select>
             </div>
@@ -96,7 +96,7 @@
         </div>
         <div class="right">
           <button class="back button" onclick="goBack()">취소</button>
-          <button class="button" onclick="update()">수정</button>
+          <button class="button" th:onclick="update('[[${newsDTO.id}]]')">수정</button>
         </div>
       </div>
 

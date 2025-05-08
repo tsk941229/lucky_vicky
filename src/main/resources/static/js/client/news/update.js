@@ -6,9 +6,10 @@ const init = () => {
 
 }
 
-const update = async () => {
+const update = async (id) => {
 
   const param = {
+    id: id,
     category: getDom("category").value,
     title: getDom("title").value,
     content: getDom("content").value,
@@ -39,7 +40,7 @@ const update = async () => {
 
   alert("등록이 완료되었습니다.");
   // goTo("/client/news/list");
-  goBack();
+  goTo(`/client/news/detail/${id}`);
 
 }
 

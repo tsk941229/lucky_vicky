@@ -387,4 +387,58 @@ public class NewsService {
             throw new RuntimeException("News 조회 실패 :: NewsService.matchPassword()", e);
         }
     }
+
+    @Transactional
+    public Long update(NewsDTO newsDTO) {
+
+        try {
+
+            // news 업데이트
+            jpaQueryFactory
+                    .update(news)
+                    .set(news.category, newsDTO.getCategory())
+                    .set(news.title, newsDTO.getTitle())
+                    .set(news.nickname, newsDTO.getNickname())
+                    .set(news.password, encodeUtil.encode(newsDTO.getPassword()))
+                    .set(news.content, newsDTO.getContent())
+                    .where(news.id.eq(newsDTO.getId()))
+                    .execute();
+
+            // 파일 업데이트
+            if(newsDTO.getNewsFile() != null && !newsDTO.getNewsFile().isEmpty()) {
+
+                MultipartFile file = newsDTO.getNewsFile();
+
+                // 업로드
+                FileDTO fileDTO = fileUtil.upload(file);
+
+                // TODO: 업로드된 파일도 삭제할지 생각해보자
+                // 파일 삭제 후 신규 저장
+                jpaQueryFactory
+                        .delete(newsFile)
+                        .where(newsFile.news.id.eq(newsDTO.getId()))
+                        .execute();
+
+                News news = newsRepository.findById(newsDTO.getId()).orElseThrow();
+
+                NewsFile newsFile = NewsFile.builder()
+                        .news(news)
+                        .originalName(fileDTO.getOriginalName())
+                        .extension(fileDTO.getExtension())
+                        .saveName(fileDTO.getSaveName())
+                        .savePath(fileDTO.getSavePath())
+                        .size(fileDTO.getSize())
+                        .build();
+
+                newsFileRepository.save(newsFile);
+            }
+
+            return newsDTO.getId();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("News 수정 실패 :: NewsService.update()", e);
+        }
+
+    }
 }
