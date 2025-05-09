@@ -1,6 +1,6 @@
-window.addEventListener("DOMContentLoaded", () => {
+window.onload = () => {
     init();
-});
+}
 
 const init = () => {
 

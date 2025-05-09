@@ -1,12 +1,15 @@
-document.addEventListener("DOMContentLoaded", () => {
+window.onload = () => {
   init();
-});
+}
 
 const init = () => {
-
+  initEditor("#content");
 }
 
 const save = async () => {
+
+  // 에디터 내용에 입력된 값을 선택자 html 태그(textarea)에 넣어주기
+  tinymce.triggerSave();
 
   let param = {
     category: getDom("category").value,
