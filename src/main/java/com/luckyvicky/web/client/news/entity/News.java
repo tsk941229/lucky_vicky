@@ -37,8 +37,12 @@ public class News extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private NewsCategoryEnum category;
 
-    private String title;
+    /* 오라클은 CLOB으로 매핑된다는데 CLOB은 쓸 때 컨버터 만들어줘야할듯?
+       지금은 포스트그레라 text로 매핑되니 상관없음 */
+    @Lob
     private String content;
+
+    private String title;
     private String nickname;
     private String password;
     private int hits;

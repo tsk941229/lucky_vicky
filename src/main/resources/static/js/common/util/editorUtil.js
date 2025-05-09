@@ -1,5 +1,5 @@
 /**
- * 파라미터 customOption이 있는 경우 customOption으로 적용
+ * 파라미터 customOption이 있는 경우 customOption 추가 적용
  */
 const initEditor = (selector, customOption) => {
 
