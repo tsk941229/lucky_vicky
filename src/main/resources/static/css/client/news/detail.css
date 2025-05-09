@@ -177,6 +177,22 @@
   flex: 9;
 }
 
+/******************** 조회수, 좋아요 ********************/
+.likes {
+  margin: 0 10px;
+}
+
+.likes .likes-button {
+  font-size: large;
+  border-radius: 100%;
+  border: none;
+
+  margin-right: 5px;
+  cursor: pointer;
+
+  color: white;
+  background-color: hotpink;
+}
 
 /******************** 컨텐츠 버튼 ********************/
 .content-button-container {

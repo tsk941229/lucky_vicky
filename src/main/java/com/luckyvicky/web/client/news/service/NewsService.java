@@ -206,6 +206,9 @@ public class NewsService {
             // 조회수 추가
             increaseHits(news, response, request);
 
+            // 좋아요 여부
+            checkLikedNews(request);
+
             // 파일 조회
             FileDTO newsFileDTO = jpaQueryFactory
                     .select(Projections.constructor(FileDTO.class,
@@ -255,6 +258,26 @@ public class NewsService {
             e.printStackTrace();
             throw new RuntimeException("News 조회 실패 :: NewsService.findNews()", e);
         }
+
+    }
+
+    /**
+     * 좋아요 누른 글인지 확인
+     */
+    private boolean checkLikedNews(HttpServletRequest request) {
+
+        boolean result = false;
+
+        // 쿠키
+        String cookieValue = cookieUtil.getCookieValue(request, "likedNewsIdList");
+
+        if(!StringUtils.hasText(cookieValue)) {
+            return false;
+        }
+
+
+
+        return result;
 
     }
 

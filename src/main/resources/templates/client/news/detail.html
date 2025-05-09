@@ -37,7 +37,10 @@
         </div>
         <div class="content-top-right center">
           <div class="views" th:text="|조회수 ${newsDTO.hits}|">조회수</div>
-          <div class="likes" th:text="|좋아요 ${newsDTO.likes}|">좋아요</div>
+          <div class="likes center">
+            <button class="likes-button" th:onclick="toggleLikes('[[${newsDTO.id}]]')">❤</button>
+            <span th:text="${newsDTO.likes}">0</span>
+          </div>
         </div>
       </div>
 

@@ -147,6 +147,13 @@ const toggleCommentReply = async (commentId) => {
 
 }
 
+/******************** 좋아요 ********************/
+const toggleLikes = (id) => {
+    console.log("id", id);
+
+
+}
+
 
 /******************** 파일 다운로드 ********************/
 const newsFileDownload = async (el) => {

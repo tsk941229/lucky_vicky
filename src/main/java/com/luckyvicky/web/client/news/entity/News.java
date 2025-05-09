@@ -75,4 +75,12 @@ public class News extends BaseEntity {
         this.hits++;
     }
 
+    public void increaseLikes() {
+        this.likes++;
+    }
+
+    public void decreaseLikes() {
+        this.likes--;
+    }
+
 }
