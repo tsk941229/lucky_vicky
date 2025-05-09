@@ -5,6 +5,7 @@ import com.luckyvicky.common.util.EncodeUtil;
 import com.luckyvicky.web.client.news.dto.NewsCommentDTO;
 import com.luckyvicky.web.client.news.entity.News;
 import com.luckyvicky.web.client.news.entity.NewsComment;
+import com.luckyvicky.web.client.news.entity.QNewsComment;
 import com.luckyvicky.web.client.news.repository.NewsCommentRepository;
 import com.luckyvicky.web.client.news.repository.NewsRepository;
 import com.querydsl.core.types.Projections;
@@ -97,6 +98,17 @@ public class NewsCommentService {
             boolean isMatched = encodeUtil.matches(newsCommentDTO.getPassword(), newsComment.getPassword());
 
             if(isMatched) {
+
+                // TODO: 삭제할 때 연관되어 있는 모든 데이터 삭제할지, 삭제컬럼 만들어서 삭제여부 정하고, 삭제된 댓글 표시 할지
+
+                // 관련 대댓글 모두 삭제 (임시)
+                List<Long> newsCommentIdList = jpaQueryFactory
+                        .select(QNewsComment.newsComment.id)
+                        .from(QNewsComment.newsComment)
+                        .where(QNewsComment.newsComment.parent.id.eq(newsComment.getId()))
+                        .fetch();
+
+                newsCommentRepository.deleteAllById(newsCommentIdList);
                 newsCommentRepository.delete(newsComment);
             }
 

@@ -354,14 +354,24 @@ public class NewsService {
 
             if(isMatched) {
 
-                // 댓글 모두 지우기
+                // TODO: 삭제할 때 연관되어 있는 모든 데이터 삭제할지, 삭제컬럼 만들어서 삭제여부 정하고, 삭제된 게시글 표시 할지
+
+                // 댓글 모두 지우기 (임시)
                 List<Long> newsCommentIdList = jpaQueryFactory
                         .select(newsComment.id)
                         .from(newsComment)
                         .where(newsComment.news.id.eq(news.getId()))
                         .fetch();
 
+                // 답글 모두 지우기 (임시)
+                List<Long> newsIdList = jpaQueryFactory
+                        .select(QNews.news.id)
+                        .from(QNews.news)
+                        .where(QNews.news.parent.id.eq(news.getId()))
+                        .fetch();
+
                 newsCommentRepository.deleteAllById(newsCommentIdList);
+                newsRepository.deleteAllById(newsIdList);
                 newsRepository.delete(news);
             }
 
