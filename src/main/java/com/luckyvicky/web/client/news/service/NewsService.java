@@ -268,7 +268,7 @@ public class NewsService {
 
         List<String> likedIdList = cookieUtil.getCookieValueList(request, "likedNewsIdList");
 
-        if(likedIdList.isEmpty()) {
+        if(CollectionUtils.isEmpty(likedIdList)) {
             return false;
         }
 
