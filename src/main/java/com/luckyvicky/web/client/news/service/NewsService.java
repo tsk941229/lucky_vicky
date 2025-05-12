@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -206,9 +207,6 @@ public class NewsService {
             // 조회수 추가
             increaseHits(news, response, request);
 
-            // 좋아요 여부
-            checkLikedNews(request);
-
             // 파일 조회
             FileDTO newsFileDTO = jpaQueryFactory
                     .select(Projections.constructor(FileDTO.class,
@@ -262,22 +260,50 @@ public class NewsService {
     }
 
     /**
-     * 좋아요 누른 글인지 확인
+     * 좋아요 여부 체크
      */
-    private boolean checkLikedNews(HttpServletRequest request) {
+    public boolean checkLikes(long id, HttpServletRequest request) {
 
-        boolean result = false;
+        // cookie name : likedNewsIdList
 
-        // 쿠키
-        String cookieValue = cookieUtil.getCookieValue(request, "likedNewsIdList");
+        List<String> likedIdList = cookieUtil.getCookieValueList(request, "likedNewsIdList");
 
-        if(!StringUtils.hasText(cookieValue)) {
+        if(likedIdList.isEmpty()) {
             return false;
         }
 
-
+        boolean result = likedIdList.stream().anyMatch(likedId -> likedId.equals(String.valueOf(id)));
 
         return result;
+
+    }
+
+    /**
+     * 좋아요 적용
+     */
+    @Transactional
+    public void toggleLikes(long id, boolean isUp, HttpServletRequest request, HttpServletResponse response) {
+
+        try {
+
+            News news = newsRepository.findById(id).orElseThrow();
+
+            List<String> likedIdList = cookieUtil.getCookieValueList(request, "likedNewsIdList");
+
+            if(isUp) {
+                // 좋아요 -> 좋아요+1, 쿠키에 id 등록
+                news.increaseLikes();
+                cookieUtil.addCookie(response, "likedNewsIdList", List.of(String.valueOf(id)));
+            }
+
+            if(!isUp) {
+                // 좋아요 취소 -> 좋아요-1, 쿠키에서 id 제거
+                news.decreaseLikes();
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException("News 좋아요 적용 실패 :: NewsService.toggleLikes()", e);
+        }
 
     }
 
@@ -286,24 +312,22 @@ public class NewsService {
      */
     private void increaseHits(News news, HttpServletResponse response, HttpServletRequest request) {
 
-        String cookieValue = cookieUtil.getCookieValue(request, "viewedNewsIdList");
+        List<String> viewedIdList = cookieUtil.getCookieValueList(request, "viewedNewsIdList");
 
         // 쿠키값 없을 때
-        if(!StringUtils.hasText(cookieValue)) {
+        if(CollectionUtils.isEmpty(viewedIdList)) {
             news.increaseHits();
-            cookieUtil.addCookie(response, "viewedNewsIdList", String.valueOf(news.getId()));
+            cookieUtil.addCookie(response, "viewedNewsIdList", List.of(String.valueOf(news.getId())));
             return;
         }
 
         boolean isViewed = false;
-
-        List<String> viewedIdList = new ArrayList<>(List.of(cookieValue.split("\\|")));
         isViewed = viewedIdList.contains(String.valueOf(news.getId()));
 
         if(!isViewed){
             news.increaseHits();
             viewedIdList.add(String.valueOf(news.getId()));
-            cookieUtil.addCookie(response, "viewedNewsIdList", String.join("|", viewedIdList));
+            cookieUtil.addCookie(response, "viewedNewsIdList", viewedIdList);
         }
 
     }
@@ -474,4 +498,5 @@ public class NewsService {
         }
 
     }
+
 }

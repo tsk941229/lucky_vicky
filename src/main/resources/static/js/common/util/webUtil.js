@@ -25,8 +25,9 @@ const fetchPOST = async (url, formData) => {
 const objToFormData = (obj) => {
     const formData = new FormData();
     Object.entries(obj).forEach(([key, value]) => {
-        // 유효한 value만 넘기기
-        if(value) formData.append(key, value);
+        // // 유효한 value만 넘기기
+        // if(value)
+        formData.append(key, value);
     });
     return formData;
 }

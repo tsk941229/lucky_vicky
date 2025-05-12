@@ -77,6 +77,29 @@ public class NewsController {
         return "client/news/detail";
     }
 
+    // 좋아요 체크
+    @GetMapping("/client/news/check-likes/{id}")
+    @ResponseBody
+    public ApiResponse<Boolean> checkLikes(@PathVariable long id, HttpServletRequest request) {
+
+        boolean isLiked = newsService.checkLikes(id, request);
+
+        return new ApiResponse<>(isLiked);
+
+    }
+
+    @PostMapping("/client/news/toggle-likes")
+    @ResponseBody
+    public ApiResponse<Boolean> toggleLikes(@RequestParam long id,
+                                      @RequestParam boolean isUp,
+                                      HttpServletRequest request,
+                                      HttpServletResponse response) {
+
+        newsService.toggleLikes(id, isUp, request, response);
+
+        return new ApiResponse<>(isUp);
+    }
+
 
     @PostMapping("/client/news/delete")
     @ResponseBody

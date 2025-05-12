@@ -13,14 +13,24 @@ import java.util.Optional;
 @Component
 public class CookieUtil {
 
-    public void addCookie(HttpServletResponse response, String name, String value) {
+    /*
+    * List<String>로 반환
+    * 넣을 때도 List<String> 넣기
+    * */
+
+    private String separator = "|";
+
+    public void addCookie(HttpServletResponse response, String name, List<String> valueList) {
+
+        String value = String.join(separator, valueList);
+
         Cookie cookie = new Cookie(name, value);
         cookie.setPath("/");
         cookie.setMaxAge(60*60*24); // TODO: 자정에 만료되도록 수정
         response.addCookie(cookie);
     }
 
-    public String getCookieValue(HttpServletRequest request, String name) {
+    public List<String> getCookieValueList(HttpServletRequest request, String name) {
 
         Cookie[] cookies = request.getCookies();
 
@@ -32,7 +42,16 @@ public class CookieUtil {
 
         Cookie cookie = optionalCookie.get();
 
-        return cookie.getValue();
+        String value = cookie.getValue();
+
+        // 가변 List로 반환 (length가 1이어도 사용부에서 일관적으로 사용할 수 있게 List로 반환)
+        List<String> valueList = new ArrayList<>(List.of(value.split("\\" + separator)));
+
+        return valueList;
+
+    }
+
+    public void removeCookieValue() {
 
     }
 

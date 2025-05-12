@@ -1,9 +1,9 @@
-window.onload = () => {
-    init();
+window.onload = async () => {
+    await init();
 }
 
-const init = () => {
-
+const init = async () => {
+    await initLikes();
 }
 
 const saveComment = async (newsId) => {
@@ -148,10 +148,73 @@ const toggleCommentReply = async (commentId) => {
 }
 
 /******************** 좋아요 ********************/
-const toggleLikes = (id) => {
-    console.log("id", id);
+const initLikes = async () => {
 
+    // id 가져오기 임시 TODO: url에 의존하기 때문에 별로 좋지 않음 나중에 수정해보자
+    const pathParts = window.location.pathname.split("/");
+    const id = pathParts.at(-1);
 
+    const {status, data} = await fetch(`/client/news/check-likes/${id}`);
+
+    if(!status) {
+        alert("좋아요 여부 확인에 실패했습니다.");
+        return;
+    }
+
+    setLikesFalse();
+
+    if(data) setLikesTrue();
+
+}
+
+const toggleLikes = async (id) => {
+
+    const $likes = getDom("likes");
+
+    const isLiked = $likes.getAttribute("isLiked");
+
+    /*
+    * isLiked == "Y": 좋아요 이미 누른상태
+    * isLiked == "N": 좋아요 안누른 상태
+    * */
+
+    let isUp = false;
+    setLikesFalse();
+
+    if(isLiked === "N") {
+        isUp = true;
+        setLikesTrue();
+    }
+
+    const param = {
+        id: id,
+        isUp: isUp
+    }
+
+    const formData = objToFormData(param);
+
+    const {status} = await fetchPOST("/client/news/toggle-likes", formData);
+
+    if(!status) {
+        // 원상복귀
+        setLikesFalse();
+        if(isLiked === "Y") setLikesTrue();
+
+        alert("좋아요 적용에 실패했습니다.");
+    }
+
+}
+
+const setLikesTrue = () => {
+    const $likes = getDom("likes");
+    $likes.style.backgroundColor = "hotpink";
+    $likes.setAttribute("isLiked", "Y");
+}
+
+const setLikesFalse = () => {
+    const $likes = getDom("likes");
+    $likes.style.backgroundColor = "gray";
+    $likes.setAttribute("isLiked", "N");
 }
 
 
