@@ -51,8 +51,4 @@ public class CookieUtil {
 
     }
 
-    public void removeCookieValue() {
-
-    }
-
 }

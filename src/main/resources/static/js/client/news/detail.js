@@ -154,7 +154,7 @@ const initLikes = async () => {
     const pathParts = window.location.pathname.split("/");
     const id = pathParts.at(-1);
 
-    const {status, data} = await fetch(`/client/news/check-likes/${id}`);
+    const {status, data} = await (await fetch(`/client/news/check-likes/${id}`)).json();
 
     if(!status) {
         alert("좋아요 여부 확인에 실패했습니다.");
@@ -193,7 +193,7 @@ const toggleLikes = async (id) => {
 
     const formData = objToFormData(param);
 
-    const {status} = await fetchPOST("/client/news/toggle-likes", formData);
+    const {status, data} = await fetchPOST("/client/news/toggle-likes", formData);
 
     if(!status) {
         // 원상복귀
@@ -201,7 +201,10 @@ const toggleLikes = async (id) => {
         if(isLiked === "Y") setLikesTrue();
 
         alert("좋아요 적용에 실패했습니다.");
+        return;
     }
+
+    getDom("likes-count").textContent = data;
 
 }
 

@@ -90,14 +90,14 @@ public class NewsController {
 
     @PostMapping("/client/news/toggle-likes")
     @ResponseBody
-    public ApiResponse<Boolean> toggleLikes(@RequestParam long id,
+    public ApiResponse<Integer> toggleLikes(@RequestParam long id,
                                       @RequestParam boolean isUp,
                                       HttpServletRequest request,
                                       HttpServletResponse response) {
 
-        newsService.toggleLikes(id, isUp, request, response);
+        Integer likesCount = newsService.toggleLikes(id, isUp, request, response);
 
-        return new ApiResponse<>(isUp);
+        return new ApiResponse<>(likesCount);
     }
 
 

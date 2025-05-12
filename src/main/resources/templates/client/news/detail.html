@@ -39,7 +39,7 @@
           <div class="views" th:text="|조회수 ${newsDTO.hits}|">조회수</div>
           <div class="likes center">
             <button class="likes-button" id="likes" th:onclick="toggleLikes('[[${newsDTO.id}]]')">❤</button>
-            <span th:text="${newsDTO.likes}">0</span>
+            <span id="likes-count" th:text="${newsDTO.likes}">0</span>
           </div>
         </div>
       </div>

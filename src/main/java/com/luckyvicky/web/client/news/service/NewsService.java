@@ -282,7 +282,7 @@ public class NewsService {
      * 좋아요 적용
      */
     @Transactional
-    public void toggleLikes(long id, boolean isUp, HttpServletRequest request, HttpServletResponse response) {
+    public Integer toggleLikes(long id, boolean isUp, HttpServletRequest request, HttpServletResponse response) {
 
         try {
 
@@ -293,13 +293,29 @@ public class NewsService {
             if(isUp) {
                 // 좋아요 -> 좋아요+1, 쿠키에 id 등록
                 news.increaseLikes();
-                cookieUtil.addCookie(response, "likedNewsIdList", List.of(String.valueOf(id)));
+
+                if(CollectionUtils.isEmpty(likedIdList)) {
+                    // 쿠키 값 없을 때
+                    cookieUtil.addCookie(response, "likedNewsIdList", List.of(String.valueOf(id)));
+                } else {
+                    // 쿠키 값 있을 때
+                    likedIdList.add(String.valueOf(id));
+                    cookieUtil.addCookie(response, "likedNewsIdList", likedIdList);
+                }
+
             }
 
             if(!isUp) {
                 // 좋아요 취소 -> 좋아요-1, 쿠키에서 id 제거
                 news.decreaseLikes();
+
+                if(!CollectionUtils.isEmpty(likedIdList)) {
+                    likedIdList.remove(String.valueOf(id));
+                    cookieUtil.addCookie(response, "likedNewsIdList", likedIdList);
+                }
             }
+
+            return news.getLikes();
 
         } catch (Exception e) {
             throw new RuntimeException("News 좋아요 적용 실패 :: NewsService.toggleLikes()", e);
