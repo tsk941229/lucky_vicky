@@ -433,8 +433,16 @@ public class NewsService {
                         .where(QNews.news.parent.id.eq(news.getId()))
                         .fetch();
 
+                // 파일 모두 지우기 (임시, 파일은 upload된 파일도 삭제할지 생각해봐야 함)
+                List<Long> newsFileIdList = jpaQueryFactory
+                        .select(newsFile.id)
+                        .from(newsFile)
+                        .where(newsFile.news.id.eq(news.getId()))
+                        .fetch();
+
                 newsCommentRepository.deleteAllById(newsCommentIdList);
                 newsRepository.deleteAllById(newsIdList);
+                newsFileRepository.deleteAllById(newsFileIdList);
                 newsRepository.delete(news);
             }
 
